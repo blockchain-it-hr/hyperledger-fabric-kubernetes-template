@@ -1,0 +1,28 @@
+OrdererOrgs:
+  - Name: Orderer
+    Domain: private.data.marketplace.com
+    Specs:
+      - Hostname: orderer
+
+PeerOrgs:
+  - Name: Buyer
+    Domain: buyer.private.data.marketplace.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+    Users:
+      Count: 2
+  - Name: Seller
+    Domain: seller.private.data.marketplace.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+    Users:
+      Count: 2
+  - Name: Observer
+    Domain: observer.private.data.marketplace.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+    Users:
+      Count: 2

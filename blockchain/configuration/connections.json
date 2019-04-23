@@ -1,0 +1,160 @@
+{
+  "name": "validswap",
+  "x-type": "hlfv1",
+  "description": "A gateway connection file for the ValidSwap networks",
+  "version": "1.0",
+  "client": {
+    "organization": "Buyer",
+    "connection": {
+      "timeout": {
+        "peer": {
+          "endorser": 300
+        },
+        "orderer": 300
+      }
+    }
+  },
+  "channels": {
+    "validswap": {
+      "orderers": [
+        "orderer.private.data.marketplace.com"
+      ],
+      "peers": {
+        "peer0.buyer.private.data.marketplace.com": {
+          "endorsingPeer": true,
+          "chaincodeQuery": true,
+          "ledgerQuery": true,
+          "eventSource": true
+        },
+        "peer1.buyer.private.data.marketplace.com": {
+          "endorsingPeer": true,
+          "chaincodeQuery": true,
+          "ledgerQuery": true,
+          "eventSource": true
+        },
+        "peer0.seller.private.data.marketplace.com": {
+          "endorsingPeer": true,
+          "chaincodeQuery": true,
+          "ledgerQuery": true,
+          "eventSource": true
+        },
+        "peer1.seller.private.data.marketplace.com": {
+          "endorsingPeer": true,
+          "chaincodeQuery": true,
+          "ledgerQuery": true,
+          "eventSource": true
+        },
+        "peer0.observer.private.data.marketplace.com": {
+          "endorsingPeer": true,
+          "chaincodeQuery": true,
+          "ledgerQuery": true,
+          "eventSource": true
+        },
+        "peer1.observer.private.data.marketplace.com": {
+          "endorsingPeer": true,
+          "chaincodeQuery": true,
+          "ledgerQuery": true,
+          "eventSource": true
+        }
+      }
+    }
+  },
+  "organizations": {
+    "Buyer": {
+      "mspid": "BuyerMSP",
+      "peers": [
+        "peer0.buyer.private.data.marketplace.com",
+        "peer1.buyer.private.data.marketplace.com"
+      ],
+      "certificateAuthorities": [
+        "ca.buyer.private.data.marketplace.com"
+      ]
+    },
+    "Seller": {
+      "mspid": "SellerMSP",
+      "peers": [
+        "peer0.seller.private.data.marketplace.com",
+        "peer1.seller.private.data.marketplace.com"
+      ],
+      "certificateAuthorities": [
+        "ca.seller.private.data.marketplace.com"
+      ]
+    },
+    "Observer": {
+      "mspid": "ObserverMSP",
+      "peers": [
+        "peer0.observer.private.data.marketplace.com",
+        "peer1.observer.private.data.marketplace.com"
+      ],
+      "certificateAuthorities": [
+        "ca.observer.private.data.marketplace.com"
+      ]
+    }
+  },
+  "orderers": {
+    "orderer.private.data.marketplace.com": {
+      "url": "grpc://localhost:7050",
+      "grpcOptions": {
+        "ssl-target-name-override": "orderer.private.data.marketplace.com"
+      }
+    }
+  },
+  "peers": {
+    "peer0.buyer.private.data.marketplace.com": {
+      "url": "grpc://localhost:7051",
+      "grpcOptions": {
+        "ssl-target-name-override": "peer0.buyer.private.data.marketplace.com",
+        "request-timeout": 120
+      }
+    },
+    "peer1.buyer.private.data.marketplace.com": {
+      "url": "grpc://localhost:8051",
+      "grpcOptions": {
+        "ssl-target-name-override": "peer1.buyer.private.data.marketplace.com",
+        "request-timeout": 120
+      }
+    },
+    "peer0.seller.private.data.marketplace.com": {
+      "url": "grpc://localhost:9051",
+      "grpcOptions": {
+        "ssl-target-name-override": "peer0.seller.private.data.marketplace.com",
+        "request-timeout": 120
+      }
+    },
+    "peer1.seller.private.data.marketplace.com": {
+      "url": "grpc://localhost:10051",
+      "grpcOptions": {
+        "ssl-target-name-override": "peer1.seller.private.data.marketplace.com",
+        "request-timeout": 120
+      }
+    },
+    "peer0.observer.private.data.marketplace.com": {
+      "url": "grpc://localhost:11051",
+      "grpcOptions": {
+        "ssl-target-name-override": "peer0.observer.private.data.marketplace.com",
+        "request-timeout": 120
+      }
+    },
+    "peer1.observer.private.data.marketplace.com": {
+      "url": "grpc://localhost:12051",
+      "grpcOptions": {
+        "ssl-target-name-override": "peer0.observer.private.data.marketplace.com",
+        "request-timeout": 120
+      }
+    }
+  },
+  "certificateAuthorities": {
+    "ca.buyer.private.data.marketplace.com": {
+      "url": "http://localhost:7054",
+      "caName": "ca.buyer.private.data.marketplace.com"
+    },
+    "ca.seller.private.data.marketplace.com": {
+      "url": "http://localhost:8054",
+      "caName": "ca.seller.private.data.marketplace.com"
+    },
+    "ca.observer.private.data.marketplace.com": {
+      "url": "http://localhost:9054",
+      "caName": "ca.observer.private.data.marketplace.com"
+    }
+  }
+}

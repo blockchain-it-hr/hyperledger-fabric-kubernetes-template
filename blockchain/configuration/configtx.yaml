@@ -1,0 +1,223 @@
+################################################################################
+#
+#   SECTION: Orderer
+#
+#   - This section defines the values to encode into a config transaction or
+#   genesis block for orderer related parameters
+#
+################################################################################
+Orderer: &OrdererDefaults
+  OrdererType: solo
+  Addresses:
+  - orderer.private.data.marketplace.com:7050
+  BatchTimeout: 5s
+  BatchSize:
+    MaxMessageCount: 10
+    AbsoluteMaxBytes: 99 MB
+    PreferredMaxBytes: 512 KB
+  Kafka:
+    Brokers:
+    - 127.0.0.1:9092
+  Organizations:
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    BlockValidation:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+
+############################################################################
+# SECTION: Organizations
+############################################################################
+Organizations:
+- &OrdererOrg
+  Name: OrdererOrg
+  ID: OrdererMSP
+  MSPDir: crypto-config/ordererOrganizations/private.data.marketplace.com/msp
+  Policies:
+    Readers:
+      Type: Signature
+      Rule: "OR('OrdererMSP.member')"
+    Writers:
+      Type: Signature
+      Rule: "OR('OrdererMSP.member')"
+    Admins:
+      Type: Signature
+      Rule: "OR('OrdererMSP.admin')"
+
+- &Buyer
+  Name: BuyerMSP
+  ID: BuyerMSP
+  MSPDir: crypto-config/peerOrganizations/buyer.private.data.marketplace.com/msp
+  Policies:
+    Readers:
+      Type: Signature
+      Rule: "OR('BuyerMSP.admin', 'BuyerMSP.peer', 'BuyerMSP.client')"
+    Writers:
+      Type: Signature
+      Rule: "OR('BuyerMSP.admin', 'BuyerMSP.client')"
+    Admins:
+      Type: Signature
+      Rule: "OR('BuyerMSP.admin')"
+  AnchorPeers:
+  - Host: peer0.buyer.private.data.marketplace.com
+    Port: 7051
+  - Host: peer1.buyer.private.data.marketplace.com
+    Port: 7051
+
+- &Seller
+  Name: SellerMSP
+  ID: SellerMSP
+  MSPDir: crypto-config/peerOrganizations/seller.private.data.marketplace.com/msp
+  Policies:
+    Readers:
+      Type: Signature
+      Rule: "OR('SellerMSP.admin', 'SellerMSP.peer', 'SellerMSP.client')"
+    Writers:
+      Type: Signature
+      Rule: "OR('SellerMSP.admin', 'SellerMSP.client')"
+    Admins:
+      Type: Signature
+      Rule: "OR('SellerMSP.admin')"
+  AnchorPeers:
+  - Host: peer0.seller.private.data.marketplace.com
+    Port: 7051
+  - Host: peer1.seller.private.data.marketplace.com
+    Port: 7051
+
+- &Observer
+  Name: ObserverMSP
+  ID: ObserverMSP
+  MSPDir: crypto-config/peerOrganizations/observer.private.data.marketplace.com/msp
+  Policies:
+    Readers:
+      Type: Signature
+      Rule: "OR('ObserverMSP.admin', 'ObserverMSP.peer', 'ObserverMSP.client')"
+    Writers:
+      Type: Signature
+      Rule: "OR('ObserverMSP.admin', 'ObserverMSP.client')"
+    Admins:
+      Type: Signature
+      Rule: "OR('ObserverMSP.admin')"
+  AnchorPeers:
+  - Host: peer0.observer.private.data.marketplace.com
+    Port: 7051
+  - Host: peer1.observer.private.data.marketplace.com
+    Port: 7051
+
+################################################################################
+#
+#   SECTION: Capabilities
+#
+#   - This section defines the capabilities of fabric network. This is a new
+#   concept as of v1.1.0 and should not be utilized in mixed networks with
+#   v1.0.x peers and orderers.  Capabilities define features which must be
+#   present in a fabric binary for that binary to safely participate in the
+#   fabric network.  For instance, if a new MSP type is added, newer binaries
+#   might recognize and validate the signatures from this type, while older
+#   binaries without this support would be unable to validate those
+#   transactions.  This could lead to different versions of the fabric binaries
+#   having different world states.  Instead, defining a capability for a channel
+#   informs those binaries without this capability that they must cease
+#   processing transactions until they have been upgraded.  For v1.0.x if any
+#   capabilities are defined (including a map with all capabilities turned off)
+#   then the v1.0.x peer will deliberately crash.
+#
+################################################################################
+Capabilities:
+  Channel: &ChannelCapabilities
+    V1_3: true
+
+  Orderer: &OrdererCapabilities
+    V1_1: true
+
+  Application: &ApplicationCapabilities
+    V1_3: true
+    V1_2: false
+    V1_1: false
+
+################################################################################
+#
+#   SECTION: Application
+#
+#   - This section defines the values to encode into a config transaction or
+#   genesis block for application related parameters
+#
+################################################################################
+Application: &ApplicationDefaults
+
+  Organizations:
+
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+
+  Capabilities:
+    <<: *ApplicationCapabilities
+
+################################################################################
+#
+#   CHANNEL
+#
+#   This section defines the values to encode into a config transaction or
+#   genesis block for channel related parameters.
+#
+################################################################################
+Channel: &ChannelDefaults
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+
+  Capabilities:
+    <<: *ChannelCapabilities
+
+############################################################################################################################
+# Profile
+############################################################################################################################
+Profiles:
+  ThreeOrgOrdererGenesis:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+      - *OrdererOrg
+      Capabilities:
+        <<: *OrdererCapabilities
+    Consortiums:
+      PrivateDataMarketplaceConsortium:
+        Organizations:
+        - *Buyer
+        - *Seller
+        - *Observer
+  ThreeOrgChannel:
+    Consortium: PrivateDataMarketplaceConsortium
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+      - *Buyer
+      - *Seller
+      - *Observer
+      Capabilities:
+        <<: *ApplicationCapabilities
+
