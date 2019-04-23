@@ -1,7 +1,7 @@
 'use strict';
 
 
-const { Contract, Context } = require('fabric-contract-api');
+const {Contract, Context} = require('fabric-contract-api');
 
 const Asset = require('./asset.js');
 const AssetList = require('./assetlist.js');
@@ -20,7 +20,7 @@ class AssetContract extends Contract {
     }
 
     /**
-     * Define a custom context for asst
+     * Define a custom context for asset
      */
     createContext() {
         return new AssetContext();
@@ -32,10 +32,10 @@ class AssetContract extends Contract {
         console.info('============= END : Initialize Ledger ===========');
     }
 
-    async unknownTransaction(ctx){
+    async unknownTransaction(ctx) {
         throw new Error('Unkown transaction');
     }
-    
+
     /**
      * Create asset
      *
@@ -79,8 +79,9 @@ class AssetContract extends Contract {
      * @param {String} state different states of asset
      * @param {Integer} quantity
      */
-     /*
-        CREATED: 1,
+
+    /*
+    CREATED: 1,
         PROCESSING: 2,
         TRANSPORTING: 3,
         IN_STORE: 4,
@@ -104,28 +105,28 @@ class AssetContract extends Contract {
         }
         */
 
-        if(newOwner && newOwner.length !== 0){
+        if (newOwner && newOwner.length !== 0) {
             asset.owner = newOwner;
         }
-        if(name && name.length !== 0){
+        if (name && name.length !== 0) {
             asset.name = name;
         }
-        if(cost && cost.length !== 0){
+        if (cost && cost.length !== 0) {
             asset.cost = cost;
         }
-        if(description && description.length !== 0){
+        if (description && description.length !== 0) {
             asset.description = description;
         }
-        if(category && category.length !== 0){
+        if (category && category.length !== 0) {
             asset.category = category;
         }
-        if(issueDateTime && issueDateTime.length !== 0){
+        if (issueDateTime && issueDateTime.length !== 0) {
             asset.issueDateTime = issueDateTime;
         }
-        if(issueDateTime && issueDateTime.length !== 0){
+        if (issueDateTime && issueDateTime.length !== 0) {
             asset.expirationDateTime = expirationDateTime;
         }
-        if(quantity && quantity.length !== 0){
+        if (quantity && quantity.length !== 0) {
             asset.quantity = quantity;
         }
 
@@ -138,11 +139,11 @@ class AssetContract extends Contract {
         REVOKED: 6 
         */
         //Now iterate throught states
-        if(state === 'PROCESSING'){
+        if (state === 'PROCESSING') {
             asset.setProcessing();
-        } else if (state === 'TRANSPORTING'){
+        } else if (state === 'TRANSPORTING') {
             asset.setTransporting();
-        } else if (state === 'IN_STORE'){
+        } else if (state === 'IN_STORE') {
             asset.setInStore();
         } else if (state === 'SOLD') {
             asset.setSold();
@@ -156,25 +157,6 @@ class AssetContract extends Contract {
         console.info('============= END : Update Asset ===========');
 
         return asset.toBuffer();
-    }
-
-
-    //TODO: will not be used!
-    /**
-     * Delete asset
-     *
-     * @param {Context} ctx the asset context
-     * @param {String} name
-     * @param {String} id asset unique id
-     */
-    async deleteAsset(ctx, name, id){
-        let assetKey = Asset.makeKey([name, id]);
-        const result = await ctx.assetList.deleteAssetState(assetKey);
-        if (result !== 'true') {
-            throw new Error(`Asset with key: ${assetKey} cannot be deleted`);
-        }
-        console.log(result);
-        return result;
     }
 
     /**
@@ -210,7 +192,7 @@ class AssetContract extends Contract {
      * @param {String} name
      * @param {String} id asset unique id
      */
-    async getHistoryForKey(ctx, name, id){
+    async getHistoryForKey(ctx, name, id) {
         let assetKey = Asset.makeKey([name, id]);
         const iterator = await ctx.assetList.getAssetHistoryForKey(assetKey);
 
@@ -218,12 +200,12 @@ class AssetContract extends Contract {
         while (true) {
             let res = await iterator.next();
 
-            if(res.value && res.value.value.toString()){
+            if (res.value && res.value.value.toString()) {
                 let jsonRes = {};
                 console.log(res.value.value.toString('utf8'));
 
                 jsonRes.key = res.value.key;
-                try{
+                try {
                     jsonRes.record = JSON.parse(res.value.value.toString('utf8'));
                 } catch (err) {
                     console.log(err);
@@ -231,7 +213,7 @@ class AssetContract extends Contract {
                 }
                 allResults.push(jsonRes);
             }
-            if(res.done){
+            if (res.done) {
                 console.log('end of data');
                 await iterator.close();
                 console.info(allResults);
@@ -257,12 +239,12 @@ class AssetContract extends Contract {
         while (true) {
             let res = await iterator.next();
 
-            if(res.value && res.value.value.toString()){
+            if (res.value && res.value.value.toString()) {
                 let jsonRes = {};
                 console.log(res.value.value.toString('utf8'));
 
                 jsonRes.key = res.value.key;
-                try{
+                try {
                     jsonRes.record = JSON.parse(res.value.value.toString('utf8'));
                 } catch (err) {
                     console.log(err);
@@ -270,7 +252,7 @@ class AssetContract extends Contract {
                 }
                 allResults.push(jsonRes);
             }
-            if(res.done){
+            if (res.done) {
                 console.log('end of data');
                 await iterator.close();
                 //console.info(Buffer.from(JSON.stringify(allResults)));
@@ -282,9 +264,9 @@ class AssetContract extends Contract {
         console.log(assetList.toString());
         console.info('============= END : Query All Assets ===========');
         return assetList;
-        
+
         let jsonAssetList = [];
-        for(let a in assetList){
+        for (let a in assetList) {
             //console.log(a);
             jsonAssetList.push(a);
         }
