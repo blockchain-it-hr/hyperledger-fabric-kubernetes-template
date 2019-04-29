@@ -30,12 +30,9 @@ class StateList {
      */
     async addState(state) {
         let key = this.ctx.stub.createCompositeKey(this.name, state.getSplitKey());
-        console.log("Key in state: " + key);
         let data = State.serialize(state);
-        console.log("Data: " + data);
         await this.ctx.stub.putState(key, data);
-        let x = await this.ctx.stub.getState(key);
-        console.log(x);
+        return await this.ctx.stub.getState(key);
     }
 
     /**
@@ -46,26 +43,16 @@ class StateList {
     async getState(key) {
         let ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
         let data = await this.ctx.stub.getState(ledgerKey);
-        let state = State.deserialize(data, this.supportedClasses);
-        return state;
+        return State.deserialize(data, this.supportedClasses);
     }
 
     async getHistoryForKey(key){
         let ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
-        let iterator = await this.ctx.stub.getHistoryForKey(ledgerKey);
-        return iterator;
+        return await this.ctx.stub.getHistoryForKey(ledgerKey);
     }
 
     async getQueryResult(query){
-        let iterator = await this.ctx.stub.getQueryResult(query);
-        return iterator;
-    }
-
-
-    async deleteState(key){
-        let ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
-        let data = await this.ctx.stub.deleteAsset(ledgerKey);
-        return 'true';
+        return await this.ctx.stub.getQueryResult(query);
     }
 
     /**
@@ -82,7 +69,6 @@ class StateList {
 
     /** Stores the class for future deserialization */
     use(stateClass) {
-        console.log('State class:' + stateClass);
         this.supportedClasses[stateClass.getClass()] = stateClass;
     }
 

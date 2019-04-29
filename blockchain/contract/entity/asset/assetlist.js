@@ -1,6 +1,6 @@
 'use strict';
 
-const StateList = require('./../ledger-api/statelist.js');
+const StateList = require('../../api/statelist.js');
 const Asset = require('./asset.js');
 
 class AssetList extends StateList {
@@ -24,10 +24,6 @@ class AssetList extends StateList {
 
     async getAssetQueryResult(query){
         return this.getQueryResult(query);
-    }
-
-    async deleteAssetState(key){
-        return this.deleteState(key);
     }
 
     async updateAsset(asset) {

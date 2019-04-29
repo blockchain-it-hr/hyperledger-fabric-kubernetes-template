@@ -1,24 +1,24 @@
 'use strict';
 const {Contract, Context} = require('fabric-contract-api');
 
-const Asset = require('./asset.js');
-const AssetList = require('./assetlist.js');
+const Asset = require('../../entity/asset/asset.js');
+const AssetList = require('../../entity/asset/assetlist.js');
 
 
-class BuyerContext extends Context {
+class SellerContext extends Context {
     constructor() {
         super();
-        this.buyerList = new AssetList(this);
+        this.sellerList = new AssetList(this);
     }
 }
 
-class BuyerContract extends Contract {
+class SellerContract extends Contract {
     constructor() {
-        super('buyercontract');
+        super('sellercontract');
     }
 
     createContext() {
-        return new BuyerContext();
+        return new SellerContext();
     }
 
     async instantiate(ctx) {
@@ -32,14 +32,14 @@ class BuyerContract extends Contract {
     }
 
     /**
-     * Create buyer
+     * Create seller
      *
      * @param {Context} ctx the context
-     * @param {String} id buyer unique id
-     * @param {String} username buyer username
+     * @param {String} id seller unique id
+     * @param {String} username seller username
      */
-    async createBuyer(ctx, id, username) {
-        console.info('============= START : Create Buyer ===========');
+    async createSeller(ctx, id, username) {
+        console.info('============= START : Create Seller ===========');
 
         let asset = Asset.createInstance(id, username);
         asset.setCreated();
@@ -48,54 +48,54 @@ class BuyerContract extends Contract {
         console.info(asset);
         console.info(Buffer.from(JSON.stringify(asset)));
 
-        console.info('============= END : Create Buyer ===========');
+        console.info('============= END : Create Seller ===========');
         return asset.toBuffer();
     }
 
     /**
-     * Update buyer
+     * Update seller
      *
      * @param {Context} ctx the context
-     * @param {String} id buyer unique id
-     * @param {String} username buyer username
+     * @param {String} id seller unique id
+     * @param {String} username seller username
      */
-    async updateBuyer(ctx, id, username) {
-        console.info('============= START : Update Buyer ===========');
+    async updateSeller(ctx, id, username) {
+        console.info('============= START : Update Seller ===========');
 
         let assetKey = Asset.makeKey([username, id]);
         console.info(assetKey);
         let asset = await ctx.assetList.getAsset(assetKey);
         if (!asset.getUsername()) {
-            return `Buyer with id: ${id} cannot be updated because it does not exist!`;
+            return `Seller with id: ${id} cannot be updated because it does not exist!`;
         }
 
         await ctx.assetList.updateAsset(asset);
-        console.info('============= END : Update Buyer ===========');
+        console.info('============= END : Update Seller ===========');
 
         return asset.toBuffer();
     }
 
     /**
-     * Query buyer
+     * Query seller
      *
      * @param {Context} ctx the context
-     * @param {String} id buyer unique id
-     * @param {String} username buyer username
+     * @param {String} id seller unique id
+     * @param {String} username seller username
      */
-    async queryBuyer(ctx, id, username) {
-        console.info('============= START : Query Buyer ===========');
+    async querySeller(ctx, id, username) {
+        console.info('============= START : Query Seller ===========');
 
         console.info(username + ":" + id);
         let assetKey = Asset.makeKey([name, id]);
         const asset = await ctx.assetList.getAsset(assetKey);
-        console.log("Buyer in query: " + asset.toBuffer());
+        console.log("Seller in query: " + asset.toBuffer());
         let bufferedAsset = asset.toBuffer();
         if (!bufferedAsset || bufferedAsset.length === 0) {
-            return `Buyer with: ${id} and username: ${username} does not exist`;
+            return `Seller with: ${id} and username: ${username} does not exist`;
         }
-        console.info('============= END : Query Buyer ===========');
+        console.info('============= END : Query Seller ===========');
         return asset.toBuffer();
     }
 }
 
-module.exports = BuyerContract;
+module.exports = SellerContract;

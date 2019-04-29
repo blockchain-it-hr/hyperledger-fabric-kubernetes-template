@@ -5,8 +5,8 @@
 'use strict';
 
 const asset = require('./lib/assetcontract');
-const buyer = require('./lib/buyercontract');
-const seller = require('./lib/sellercontract');
+const buyer = require('./lib/user/buyercontract');
+const seller = require('./lib/user/sellercontract');
 
 module.exports.asset = asset;
 module.exports.buyer = buyer;
