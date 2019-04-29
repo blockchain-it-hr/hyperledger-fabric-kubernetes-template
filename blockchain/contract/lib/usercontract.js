@@ -41,13 +41,13 @@ class UserContract extends Contract {
      * Create buyer
      *
      * @param {Context} ctx the context
-     * @param {String} id unique id
      * @param {String} username
+     * @param {String} id unique id
      */
-    async createBuyer(ctx, id, username) {
+    async createBuyer(ctx, username, id) {
         console.info('============= START : Create Buyer ===========');
 
-        let buyer = Buyer.createInstance(id, username);
+        let buyer = Buyer.createInstance(username, id);
         await ctx.buyerList.addBuyer(buyer);
 
         console.info(Buffer.from(JSON.stringify(buyer)));
