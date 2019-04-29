@@ -1,14 +1,14 @@
 'use strict';
 const {Contract, Context} = require('fabric-contract-api');
 
-const Asset = require('../entity/asset/asset.js');
-const AssetList = require('../entity/asset/assetlist.js');
+const AccessToken = require('../entity/accessToken/accessToken.js');
+const AccessTokenList = require('../entity/accessToken/accessTokenlist.js');
 
 
 class AccessTokenContext extends Context {
     constructor() {
         super();
-        this.accesstokenList = new AssetList(this);
+        this.accessTokenList = new AccessTokenList(this);
     }
 }
 
@@ -41,37 +41,32 @@ class AccessTokenContract extends Contract {
     async createAccessToken(ctx, id, username) {
         console.info('============= START : Create AccessToken ===========');
 
-        let asset = Asset.createInstance(id, username);
-        asset.setCreated();
-        await ctx.assetList.addAsset(asset);
+        //TODO: update
 
-        console.info(asset);
-        console.info(Buffer.from(JSON.stringify(asset)));
-
+        let accessToken = AccessToken.createInstance(id, username);
+        await ctx.accessTokenList.addAccessToken(accessToken);
+        console.info(Buffer.from(JSON.stringify(accessToken)));
         console.info('============= END : Create AccessToken ===========');
-        return asset.toBuffer();
+        return accessToken.toBuffer();
     }
 
     /**
-     * Update accesstoken
+     * Update AccessToken
      *
      * @param {Context} ctx the context
-     * @param {String} id accesstoken unique id
-     * @param {String} username accesstoken username
+     * @param {String} id AccessToken unique id
+     * @param {String} username AccessToken username
      */
     async updateAccessToken(ctx, id, username) {
         console.info('============= START : Update AccessToken ===========');
-
-        let assetKey = Asset.makeKey([username, id]);
-        let asset = await ctx.assetList.getAsset(assetKey);
-        if (!asset.getUsername()) {
+        let accessTokenKey = AccessToken.makeKey([username, id]);
+        let accessToken = await ctx.accessTokenList.getAccessToken(accessTokenKey);
+        if (!accessToken.getUsername()) {
             return `AccessToken with id: ${id} cannot be updated because it does not exist!`;
         }
-
-        await ctx.assetList.updateAsset(asset);
+        await ctx.accessTokenList.updateAccessToken(accessToken);
         console.info('============= END : Update AccessToken ===========');
-
-        return asset.toBuffer();
+        return accessToken.toBuffer();
     }
 
     /**
@@ -85,15 +80,15 @@ class AccessTokenContract extends Contract {
         console.info('============= START : Query AccessToken ===========');
 
         console.info(username + ":" + id);
-        let assetKey = Asset.makeKey([name, id]);
-        const asset = await ctx.assetList.getAsset(assetKey);
-        console.log("AccessToken in query: " + asset.toBuffer());
-        let bufferedAsset = asset.toBuffer();
-        if (!bufferedAsset || bufferedAsset.length === 0) {
+        let accessTokenKey = AccessToken.makeKey([name, id]);
+        const accessToken = await ctx.accessTokenList.getAccessToken(accessTokenKey);
+        console.log("AccessToken in query: " + accessToken.toBuffer());
+        let bufferedAccessToken = accessToken.toBuffer();
+        if (!bufferedAccessToken || bufferedAccessToken.length === 0) {
             return `AccessToken with: ${id} and username: ${username} does not exist`;
         }
         console.info('============= END : Query AccessToken ===========');
-        return asset.toBuffer();
+        return accessToken.toBuffer();
     }
 }
 

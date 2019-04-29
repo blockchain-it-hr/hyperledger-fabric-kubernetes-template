@@ -1,7 +1,7 @@
 'use strict';
 
 const StateList = require('../../api/statelist.js');
-const Asset = require('./asset.js');
+const Asset = require('./Asset.js');
 
 class AssetList extends StateList {
 

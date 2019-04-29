@@ -1,12 +1,12 @@
 'use strict';
 const {Contract, Context} = require('fabric-contract-api');
 
-const Buyer = require('../entity/buyer/buyer.js');
-const Seller = require('../entity/seller/seller.js');
-const Observer = require('../entity/observer/observer.js');
-const BuyerList = require('../entity/buyer/buyerlist.js');
-const SellerList = require('../entity/seller/sellerlist.js');
-const ObserverList = require('../entity/observer/observerlist.js');
+const Buyer = require('../entity/buyer/Buyer.js');
+const Seller = require('../entity/seller/Seller.js');
+const Observer = require('../entity/observer/Observer.js');
+const BuyerList = require('../entity/buyer/BuyerList.js');
+const SellerList = require('../entity/seller/SellerList.js');
+const ObserverList = require('../entity/observer/ObserverList.js');
 
 
 class UserContext extends Context {

@@ -1,7 +1,7 @@
 'use strict';
 
 const StateList = require('../../api/statelist.js');
-const Buyer = require('./buyer.js');
+const Buyer = require('./Buyer.js');
 
 class BuyerList extends StateList {
 

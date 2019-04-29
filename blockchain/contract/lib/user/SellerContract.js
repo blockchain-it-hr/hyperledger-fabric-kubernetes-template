@@ -1,8 +1,8 @@
 'use strict';
 const {Contract, Context} = require('fabric-contract-api');
 
-const Seller = require('../../entity/seller/seller.js');
-const SellerList = require('../../entity/seller/sellerlist.js');
+const Seller = require('../../entity/seller/Seller.js');
+const SellerList = require('../../entity/seller/SellerList.js');
 
 
 class SellerContext extends Context {

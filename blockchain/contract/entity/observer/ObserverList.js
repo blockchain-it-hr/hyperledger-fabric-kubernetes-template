@@ -1,7 +1,7 @@
 'use strict';
 
 const StateList = require('../../api/statelist.js');
-const Observer = require('./observer.js');
+const Observer = require('./Observer.js');
 
 class ObserverList extends StateList {
 
