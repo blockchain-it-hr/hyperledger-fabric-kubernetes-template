@@ -185,7 +185,7 @@ class UserContract extends Contract {
     }
 
     /**
-     * Query buyer
+     * Query seller
      *
      * @param {Context} ctx the context
      * @param {String} id data unique id

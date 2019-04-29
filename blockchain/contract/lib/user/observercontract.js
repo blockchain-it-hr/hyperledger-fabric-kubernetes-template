@@ -67,13 +67,14 @@ class ObserverContract extends Contract {
     }
 
     /**
+     /**
      * Query observer
      *
      * @param {Context} ctx the context
-     * @param {String} id observer unique id
-     * @param {String} username observer username
+     * @param {String} id data unique id
+     * @param {String} username data username
      */
-    async queryObserver(ctx, id, username) {
+    async getObserverByUsername(ctx, id, username) {
         console.info('============= START : Query Observer ===========');
         let observerKey = Observer.makeKey([username, id]);
         const observer = await ctx.observerList.getObserver(observerKey);
@@ -84,6 +85,19 @@ class ObserverContract extends Contract {
         console.info('============= END : Query Observer ===========');
         return observer.toBuffer();
     }
+
+    /**
+     * Get all observers
+     *
+     * @param {Context} ctx the context
+     */
+    async getAllObservers(ctx) {
+        console.info('============= START : Get All Observers ===========');
+        console.log(Buffer.from(JSON.stringify(ctx.observerList)));
+        console.info('============= END : Get All Observers ===========');
+        return Buffer.from(JSON.stringify(ctx.observerList));
+    }
+
 }
 
 module.exports = ObserverContract;

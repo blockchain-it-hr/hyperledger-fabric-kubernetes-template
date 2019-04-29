@@ -31,16 +31,17 @@ class BuyerContract extends Contract {
         throw new Error('Unkown transaction');
     }
 
+
     /**
      * Create buyer
      *
      * @param {Context} ctx the context
-     * @param {String} id buyer unique id
-     * @param {String} username buyer username
+     * @param {String} username
+     * @param {String} id unique id
      */
-    async createBuyer(ctx, id, username) {
+    async createBuyer(ctx, username, id) {
         console.info('============= START : Create Buyer ===========');
-        let buyer = Buyer.createInstance(id, username);
+        let buyer = Buyer.createInstance(username, id);
         await ctx.buyerList.addBuyer(buyer);
         console.info(Buffer.from(JSON.stringify(buyer)));
         console.info('============= END : Create Buyer ===========');
@@ -51,8 +52,8 @@ class BuyerContract extends Contract {
      * Update buyer
      *
      * @param {Context} ctx the context
-     * @param {String} id buyer unique id
-     * @param {String} username buyer username
+     * @param {String} id data unique id
+     * @param {String} username data username
      */
     async updateBuyer(ctx, id, username) {
         console.info('============= START : Update Buyer ===========');
@@ -62,7 +63,7 @@ class BuyerContract extends Contract {
             return `Buyer with id: ${id} cannot be updated because it does not exist!`;
         }
         await ctx.buyerList.updateBuyer(buyer);
-        console.info('============= END : Update Buyer ===========');
+        console.info('============= END : Update Data ===========');
         return buyer.toBuffer();
     }
 
@@ -70,10 +71,10 @@ class BuyerContract extends Contract {
      * Query buyer
      *
      * @param {Context} ctx the context
-     * @param {String} id buyer unique id
-     * @param {String} username buyer username
+     * @param {String} id data unique id
+     * @param {String} username data username
      */
-    async queryBuyer(ctx, id, username) {
+    async getBuyerByUsername(ctx, id, username) {
         console.info('============= START : Query Buyer ===========');
         let buyerKey = Buyer.makeKey([username, id]);
         const buyer = await ctx.buyerList.getBuyer(buyerKey);
@@ -84,6 +85,19 @@ class BuyerContract extends Contract {
         console.info('============= END : Query Buyer ===========');
         return buyer.toBuffer();
     }
+
+    /**
+     * Get all buyers
+     *
+     * @param {Context} ctx the context
+     */
+    async getAllBuyers(ctx) {
+        console.info('============= START : Get All Buyers ===========');
+        console.log(Buffer.from(JSON.stringify(ctx.buyerList)));
+        console.info('============= END : Get All Buyers ===========');
+        return Buffer.from(JSON.stringify(ctx.buyerList));
+    }
+
 }
 
 module.exports = BuyerContract;

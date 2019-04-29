@@ -35,12 +35,11 @@ class SellerContract extends Contract {
      * Create seller
      *
      * @param {Context} ctx the context
-     * @param {String} id seller unique id
-     * @param {String} username seller username
+     * @param {String} id unique id
+     * @param {String} username
      */
     async createSeller(ctx, id, username) {
         console.info('============= START : Create Seller ===========');
-
         let seller = Seller.createInstance(id, username);
         await ctx.sellerList.addSeller(seller);
         console.info(Buffer.from(JSON.stringify(seller)));
@@ -52,8 +51,8 @@ class SellerContract extends Contract {
      * Update seller
      *
      * @param {Context} ctx the context
-     * @param {String} id seller unique id
-     * @param {String} username seller username
+     * @param {String} id data unique id
+     * @param {String} username data username
      */
     async updateSeller(ctx, id, username) {
         console.info('============= START : Update Seller ===========');
@@ -67,17 +66,18 @@ class SellerContract extends Contract {
         return seller.toBuffer();
     }
 
+
     /**
      * Query seller
      *
      * @param {Context} ctx the context
-     * @param {String} id seller unique id
-     * @param {String} username seller username
+     * @param {String} id data unique id
+     * @param {String} username data username
      */
-    async querySeller(ctx, id, username) {
+    async getSellerByUsername(ctx, id, username) {
         console.info('============= START : Query Seller ===========');
         let sellerKey = Seller.makeKey([username, id]);
-        const seller = await ctx.sellerList.getSeller(sellerKey);
+        const seller = await ctx.sellerList.getBuyer(sellerKey);
         let bufferedSeller = seller.toBuffer();
         if (!bufferedSeller || bufferedSeller.length === 0) {
             return `Seller with: ${id} and username: ${username} does not exist`;
@@ -85,6 +85,23 @@ class SellerContract extends Contract {
         console.info('============= END : Query Seller ===========');
         return seller.toBuffer();
     }
+
+
+    /**
+     * Get all sellers
+     *
+     * @param {Context} ctx the context
+     */
+    async getAllSellers(ctx) {
+        console.info('============= START : Get All Sellers ===========');
+        console.log(Buffer.from(JSON.stringify(ctx.sellerList)));
+        console.info('============= END : Get All Sellers ===========');
+        return Buffer.from(JSON.stringify(ctx.sellerList));
+    }
+
+
+
+
 }
 
 module.exports = SellerContract;
