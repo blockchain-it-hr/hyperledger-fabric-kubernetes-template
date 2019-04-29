@@ -1,14 +1,14 @@
 'use strict';
 const {Contract, Context} = require('fabric-contract-api');
 
-const Asset = require('../../entity/asset/asset.js');
-const AssetList = require('../../entity/asset/assetlist.js');
+const Observer = require('../../entity/observer/observer.js');
+const ObserverList = require('../../entity/observer/observerlist.js');
 
 
 class ObserverContext extends Context {
     constructor() {
         super();
-        this.observerList = new AssetList(this);
+        this.observerList = new ObserverList(this);
     }
 }
 
@@ -40,16 +40,11 @@ class ObserverContract extends Contract {
      */
     async createObserver(ctx, id, username) {
         console.info('============= START : Create Observer ===========');
-
-        let asset = Asset.createInstance(id, username);
-        asset.setCreated();
-        await ctx.assetList.addAsset(asset);
-
-        console.info(asset);
-        console.info(Buffer.from(JSON.stringify(asset)));
-
+        let observer = Observer.createInstance(id, username);
+        await ctx.observerList.addObserver(observer);
+        console.info(Buffer.from(JSON.stringify(observer)));
         console.info('============= END : Create Observer ===========');
-        return asset.toBuffer();
+        return observer.toBuffer();
     }
 
     /**
@@ -61,18 +56,14 @@ class ObserverContract extends Contract {
      */
     async updateObserver(ctx, id, username) {
         console.info('============= START : Update Observer ===========');
-
-        let assetKey = Asset.makeKey([username, id]);
-        console.info(assetKey);
-        let asset = await ctx.assetList.getAsset(assetKey);
-        if (!asset.getUsername()) {
+        let observerKey = Observer.makeKey([username, id]);
+        let observer = await ctx.observerList.getObserver(observerKey);
+        if (!observer.getUsername()) {
             return `Observer with id: ${id} cannot be updated because it does not exist!`;
         }
-
-        await ctx.assetList.updateAsset(asset);
+        await ctx.observerList.updateObserver(observer);
         console.info('============= END : Update Observer ===========');
-
-        return asset.toBuffer();
+        return observer.toBuffer();
     }
 
     /**
@@ -84,17 +75,14 @@ class ObserverContract extends Contract {
      */
     async queryObserver(ctx, id, username) {
         console.info('============= START : Query Observer ===========');
-
-        console.info(username + ":" + id);
-        let assetKey = Asset.makeKey([name, id]);
-        const asset = await ctx.assetList.getAsset(assetKey);
-        console.log("Observer in query: " + asset.toBuffer());
-        let bufferedAsset = asset.toBuffer();
-        if (!bufferedAsset || bufferedAsset.length === 0) {
+        let observerKey = Observer.makeKey([username, id]);
+        const observer = await ctx.observerList.getObserver(observerKey);
+        let bufferedObserver = observer.toBuffer();
+        if (!bufferedObserver || bufferedObserver.length === 0) {
             return `Observer with: ${id} and username: ${username} does not exist`;
         }
         console.info('============= END : Query Observer ===========');
-        return asset.toBuffer();
+        return observer.toBuffer();
     }
 }
 

@@ -1,14 +1,14 @@
 'use strict';
 const {Contract, Context} = require('fabric-contract-api');
 
-const Asset = require('../../entity/asset/asset.js');
-const AssetList = require('../../entity/asset/assetlist.js');
+const Buyer = require('../../entity/buyer/buyer.js');
+const BuyerList = require('../../entity/buyer/buyerlist.js');
 
 
 class BuyerContext extends Context {
     constructor() {
         super();
-        this.buyerList = new AssetList(this);
+        this.buyerList = new BuyerList(this);
     }
 }
 
@@ -40,16 +40,11 @@ class BuyerContract extends Contract {
      */
     async createBuyer(ctx, id, username) {
         console.info('============= START : Create Buyer ===========');
-
-        let asset = Asset.createInstance(id, username);
-        asset.setCreated();
-        await ctx.assetList.addAsset(asset);
-
-        console.info(asset);
-        console.info(Buffer.from(JSON.stringify(asset)));
-
+        let buyer = Buyer.createInstance(id, username);
+        await ctx.buyerList.addBuyer(buyer);
+        console.info(Buffer.from(JSON.stringify(buyer)));
         console.info('============= END : Create Buyer ===========');
-        return asset.toBuffer();
+        return buyer.toBuffer();
     }
 
     /**
@@ -61,17 +56,14 @@ class BuyerContract extends Contract {
      */
     async updateBuyer(ctx, id, username) {
         console.info('============= START : Update Buyer ===========');
-
-        let assetKey = Asset.makeKey([username, id]);
-        let asset = await ctx.assetList.getAsset(assetKey);
-        if (!asset.getUsername()) {
+        let buyerKey = Buyer.makeKey([username, id]);
+        let buyer = await ctx.buyerList.getBuyer(buyerKey);
+        if (!buyer.getUsername()) {
             return `Buyer with id: ${id} cannot be updated because it does not exist!`;
         }
-
-        await ctx.assetList.updateAsset(asset);
+        await ctx.buyerList.updateBuyer(buyer);
         console.info('============= END : Update Buyer ===========');
-
-        return asset.toBuffer();
+        return buyer.toBuffer();
     }
 
     /**
@@ -83,17 +75,14 @@ class BuyerContract extends Contract {
      */
     async queryBuyer(ctx, id, username) {
         console.info('============= START : Query Buyer ===========');
-
-        console.info(username + ":" + id);
-        let assetKey = Asset.makeKey([name, id]);
-        const asset = await ctx.assetList.getAsset(assetKey);
-        console.log("Buyer in query: " + asset.toBuffer());
-        let bufferedAsset = asset.toBuffer();
-        if (!bufferedAsset || bufferedAsset.length === 0) {
+        let buyerKey = Buyer.makeKey([username, id]);
+        const buyer = await ctx.buyerList.getBuyer(buyerKey);
+        let bufferedBuyer = buyer.toBuffer();
+        if (!bufferedBuyer || bufferedBuyer.length === 0) {
             return `Buyer with: ${id} and username: ${username} does not exist`;
         }
         console.info('============= END : Query Buyer ===========');
-        return asset.toBuffer();
+        return buyer.toBuffer();
     }
 }
 
