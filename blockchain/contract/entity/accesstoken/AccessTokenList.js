@@ -1,34 +1,34 @@
 'use strict';
 
 const StateList = require('../../api/statelist.js');
-const Buyer = require('./Buyer.js');
+const AccessToken = require('./AccessToken.js');
 
-class BuyerList extends StateList {
+class AccessTokenList extends StateList {
 
     constructor(ctx) {
         super(ctx, 'accesstokencontractlist');
-        this.use(Buyer);
+        this.use(AccessToken);
     }
 
-    async addBuyer(accessToken) {
+    async addAccessToken(accessToken) {
         return this.addState(accessToken);
     }
 
-    async getBuyer(accessTokenKey) {
+    async getAccessToken(accessTokenKey) {
         return this.getState(accessTokenKey);
     }
 
-    async getBuyerHistoryForKey(key){
+    async getAccessTokenHistoryForKey(key){
         return this.getHistoryForKey(key);
     }
 
-    async getBuyerQueryResult(query){
+    async getAccessTokenQueryResult(query){
         return this.getQueryResult(query);
     }
 
-    async updateBuyer(accessToken) {
+    async updateAccessToken(accessToken) {
         return this.updateState(accessToken);
     }
 }
 
-module.exports = BuyerList;
+module.exports = AccessTokenList;
