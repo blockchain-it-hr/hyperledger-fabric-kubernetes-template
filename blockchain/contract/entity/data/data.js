@@ -1,6 +1,6 @@
 'use strict';
 
-const State = require('../../api/state.js')
+const State = require('../../api/state.js');
 
 /**
  * @param {String} id data unique id
@@ -22,11 +22,11 @@ class Data extends State {
         this.owner = newOwner;
     }
 
-    getData(){
+    getData() {
         return this.name;
     }
 
-    setData(name){
+    setData(name) {
         this.name = name;
     }
 
@@ -43,15 +43,14 @@ class Data extends State {
      * @param {Buffer} data to form back into the object
      */
     static deserialize(data) {
-        console.log('Data for deserialization: ' + data);
         return State.deserializeClass(data, Data);
     }
 
     /**
      * Factory method to create a data object
      */
-    static createInstance(owner, id, name, category, issueDateTime, expirationDateTime, cost, description) {
-        return new Data({owner, id, name, category, issueDateTime, expirationDateTime, cost, description});
+    static createInstance(id, username, json) {
+        return new Data({username, id, json});
     }
 
     static getClass() {

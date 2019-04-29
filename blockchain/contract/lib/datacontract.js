@@ -43,7 +43,7 @@ class DataContract extends Contract {
         console.info('============= START : Create Data ===========');
 
         let data = Data.createInstance(id, username, json);
-        data.setCreated();
+        //data.setCreated();
         await ctx.dataList.addData(data);
 
         console.info(data);
