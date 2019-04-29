@@ -4,29 +4,29 @@ const State = require('../../api/state.js')
 
 /**
  * @param {String} id observer unique id
- * @param {String} owner observer owner
+ * @param {String} username observer username
  * @param {String} observer observer observer
  */
 class Observer extends State {
 
     constructor(obj) {
-        super(Observer.getClass(), [obj.owner, obj.id]);
+        super(Observer.getClass(), [obj.username, obj.id]);
         Object.assign(this, obj);
     }
 
-    getOwner() {
-        return this.owner;
+    getUsername() {
+        return this.username;
     }
 
-    setOwner(newOwner) {
-        this.owner = newOwner;
+    setUsername(newUsername) {
+        this.username = newUsername;
     }
 
-    getObserver(){
+    getObserver() {
         return this.name;
     }
 
-    setObserver(name){
+    setObserver(name) {
         this.name = name;
     }
 
@@ -43,15 +43,14 @@ class Observer extends State {
      * @param {Buffer} observer to form back into the object
      */
     static deserialize(observer) {
-        console.log('Observer for deserialization: ' + observer);
         return State.deserializeClass(observer, Observer);
     }
 
     /**
      * Factory method to create a observer object
      */
-    static createInstance(owner, id, name, category, issueDateTime, expirationDateTime, cost, description) {
-        return new Observer({owner, id, name, category, issueDateTime, expirationDateTime, cost, description});
+    static createInstance(username, id) {
+        return new Observer({username, id});
     }
 
     static getClass() {
