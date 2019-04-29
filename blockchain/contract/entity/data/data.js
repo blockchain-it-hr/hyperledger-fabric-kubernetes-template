@@ -4,22 +4,22 @@ const State = require('../../api/state.js');
 
 /**
  * @param {String} id data unique id
- * @param {String} owner data owner
+ * @param {String} username data username
  * @param {String} data data data
  */
 class Data extends State {
 
     constructor(obj) {
-        super(Data.getClass(), [obj.owner, obj.id]);
+        super(Data.getClass(), [obj.username, obj.id]);
         Object.assign(this, obj);
     }
 
-    getOwner() {
-        return this.owner;
+    getUsername() {
+        return this.username;
     }
 
-    setOwner(newOwner) {
-        this.owner = newOwner;
+    setUsername(newUsername) {
+        this.username = newUsername;
     }
 
     getData() {
