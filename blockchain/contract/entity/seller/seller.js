@@ -4,30 +4,22 @@ const State = require('../../api/state.js')
 
 /**
  * @param {String} id seller unique id
- * @param {String} owner seller owner
+ * @param {String} username seller username
  * @param {String} seller seller seller
  */
 class Seller extends State {
 
     constructor(obj) {
-        super(Seller.getClass(), [obj.owner, obj.id]);
+        super(Seller.getClass(), [obj.username, obj.id]);
         Object.assign(this, obj);
     }
 
-    getOwner() {
-        return this.owner;
+    getUsername() {
+        return this.username;
     }
 
-    setOwner(newOwner) {
-        this.owner = newOwner;
-    }
-
-    getSeller(){
-        return this.name;
-    }
-
-    setSeller(name){
-        this.name = name;
+    setUsername(newUsername) {
+        this.username = newUsername;
     }
 
     static fromBuffer(buffer) {
@@ -43,15 +35,14 @@ class Seller extends State {
      * @param {Buffer} seller to form back into the object
      */
     static deserialize(seller) {
-        console.log('Seller for deserialization: ' + seller);
         return State.deserializeClass(seller, Seller);
     }
 
     /**
      * Factory method to create a seller object
      */
-    static createInstance(owner, id, name, category, issueDateTime, expirationDateTime, cost, description) {
-        return new Seller({owner, id, name, category, issueDateTime, expirationDateTime, cost, description});
+    static createInstance(username, id) {
+        return new Seller({username, id});
     }
 
     static getClass() {
