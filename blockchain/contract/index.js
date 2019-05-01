@@ -4,15 +4,14 @@
 
 'use strict';
 
-const accessToken = require('./lib/AccessTokenContract');
-const data = require('./lib/DataContract');
-const buyer = require('./lib/user/BuyerContract');
-const seller = require('./lib/user/SellerContract');
-const observer = require('./lib/user/ObserverContract');
+const DataContract = require('./lib/DataContract');
 
-module.exports.accessToken = accessToken;
-module.exports.data = data;
-module.exports.buyer = buyer;
-module.exports.seller = seller;
-module.exports.observer = observer;
-module.exports.contracts = [accessToken, data, buyer, seller, observer];
+//const AccessToken = require('./lib/AccessTokenContract');
+//const Data = require('./lib/DataContract');
+//const Buyer = require('./lib/user/BuyerContract');
+//const Seller = require('./lib/user/SellerContract');
+//const Observer = require('./lib/user/ObserverContract');
+const UserContract = require('./lib/UserContract');
+
+module.exports.UserContract = UserContract;
+module.exports.contracts = [ DataContract, UserContract ];

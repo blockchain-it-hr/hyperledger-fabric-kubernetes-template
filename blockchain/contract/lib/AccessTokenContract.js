@@ -1,8 +1,8 @@
 'use strict';
-const {Contract, Context} = require('fabric-contract-api');
+const { Contract, Context } = require('fabric-contract-api');
 
-const AccessToken = require('../entity/accesstoken/AccessToken.js');
-const AccessTokenList = require('../entity/accesstoken/AccessTokenList.js');
+const AccessToken = require('./entity/accesstoken/AccessToken.js');
+const AccessTokenList = require('./entity/accesstoken/AccessTokenList.js');
 
 class AccessTokenContext extends Context {
     constructor() {

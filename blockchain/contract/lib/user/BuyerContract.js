@@ -1,8 +1,8 @@
 'use strict';
 const {Contract, Context} = require('fabric-contract-api');
 
-const Buyer = require('../../entity/buyer/Buyer.js');
-const BuyerList = require('../../entity/buyer/BuyerList.js');
+const Buyer = require('../entity/buyer/Buyer');
+const BuyerList = require('../entity/buyer/BuyerList');
 
 
 class BuyerContext extends Context {
@@ -55,7 +55,7 @@ class BuyerContract extends Contract {
      * @param {String} id data unique id
      * @param {String} username data username
      */
-    async updateBuyer(ctx, id, username) {
+    async updateBuyer(ctx, username, id) {
         console.info('============= START : Update Buyer ===========');
         let buyerKey = Buyer.makeKey([username, id]);
         let buyer = await ctx.buyerList.getBuyer(buyerKey);
@@ -74,7 +74,7 @@ class BuyerContract extends Contract {
      * @param {String} id data unique id
      * @param {String} username data username
      */
-    async getBuyerByUsername(ctx, id, username) {
+    async getBuyerByUsername(ctx, username, id) {
         console.info('============= START : Query Buyer ===========');
         let buyerKey = Buyer.makeKey([username, id]);
         const buyer = await ctx.buyerList.getBuyer(buyerKey);
