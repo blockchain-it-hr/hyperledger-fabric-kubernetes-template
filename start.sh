@@ -6,73 +6,52 @@ echo "/ ___|  |_   _|    / \    |  _ \  |_   _|"
 echo "\___ \    | |     / _ \   | |_) |   | |  "
 echo " ___) |   | |    / ___ \  |  _ <    | |  "
 echo "|____/    |_|   /_/   \_\ |_| \_\   |_|  "
-
-
 echo $
-export COMPOSE_PROJECT_NAME=validswap
-export IMAGE_TAG=1.4
-export CHANNEL_NAME=validswap
 
-cd /home/validswap/validswap/blockchain/configuration
-
-# import utils, scripts and initialize
-#. $PWD/initialize.sh
-#. $PWD/utils.shPWD
+cd ${INSTALLATION_PATH}
 
 ./initialize.sh generate
 ./initialize.sh up -l node
 
-#Run cli
-#docker exec cli script.sh #$CHANNEL_NAME $CLI_DELAY $LANGUAGE $CLI_TIMEOUT $VERBOSE
+CORE_PEER_MSPCONFIGPATH1='/etc/hyperledger/msp/users/Admin@${ORG1}.${NAMESPACE}.com/msp'
+CORE_PEER_MSPCONFIGPATH2='/etc/hyperledger/msp/users/Admin@${ORG2}.${NAMESPACE}.com/msp'
+CORE_PEER_MSPCONFIGPATH3='/etc/hyperledger/msp/users/Admin@${ORG3}.${NAMESPACE}.com/msp'
 
-ORG1='foodproducer'
-ORG2='transporter'
-ORG3='store'
+CORE_PEER_ADDRESS01='peer0.${ORG1}.${NAMESPACE}.com'
+CORE_PEER_ADDRESS11='peer1.${ORG1}.${NAMESPACE}.com'
 
-ORG1MSP='FoodProducerMSP'
-ORG2MSP='TransporterMSP'
-ORG3MSP='StoreMSP'
+CORE_PEER_ADDRESS02='peer0.${ORG2}.${NAMESPACE}.com'
+CORE_PEER_ADDRESS12='peer1.${ORG2}.${NAMESPACE}.com'
 
-CORE_PEER_MSPCONFIGPATH1='/etc/hyperledger/msp/users/Admin@foodproducer.valid.swap.com/msp'
-CORE_PEER_MSPCONFIGPATH2='/etc/hyperledger/msp/users/Admin@transporter.valid.swap.com/msp'
-CORE_PEER_MSPCONFIGPATH3='/etc/hyperledger/msp/users/Admin@store.valid.swap.com/msp'
+CORE_PEER_ADDRESS03='peer0.${ORG3}.${NAMESPACE}.com'
+CORE_PEER_ADDRESS13='peer1.${ORG3}.${NAMESPACE}.com'
 
-CORE_PEER_ADDRESS01='peer0.foodproducer.valid.swap.com'
-CORE_PEER_ADDRESS11='peer1.foodproducer.valid.swap.com'
-
-CORE_PEER_ADDRESS02='peer0.transporter.valid.swap.com'
-CORE_PEER_ADDRESS12='peer1.transporter.valid.swap.com'
-
-CORE_PEER_ADDRESS03='peer0.store.valid.swap.com'
-CORE_PEER_ADDRESS13='peer1.store.valid.swap.com'
+ORDERER_TLS='/var/hyperledger/orderer/tlsca/tlsca.${NAMESPACE}.com-cert.pem'
 
 echo $PWD
-
 export FABRIC_START_TIMEOUT=10
 echo "Fabric timeout: ${FABRIC_START_TIMEOUT} s"
 sleep ${FABRIC_START_TIMEOUT}
 
-ORDERER_TLS='/var/hyperledger/orderer/tlsca/tlsca.valid.swap.com-cert.pem'
-
 # Create the channel
-docker exec -e "CORE_PEER_LOCALMSPID=${ORG1MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH1}" ${CORE_PEER_ADDRESS01} peer channel create -o orderer.valid.swap.com:7050 -c validswap -f /etc/hyperledger/configtx/channel.tx  #--tls --cafile ${ORDERER_TLS}
+docker exec -e "CORE_PEER_LOCALMSPID=${ORG1MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH1}" ${CORE_PEER_ADDRESS01} peer channel create -o orderer.valid.swap.com:7050 -c ${CHANNEL_NAME} -f /etc/hyperledger/configtx/channel.tx  #--tls --cafile ${ORDERER_TLS}
 
 # Join the channel
-docker exec -e "CORE_PEER_LOCALMSPID=${ORG1MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH1}" ${CORE_PEER_ADDRESS01} peer channel join -b validswap.block
-docker exec -e "CORE_PEER_LOCALMSPID=${ORG1MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH1}" ${CORE_PEER_ADDRESS11} peer channel join -b validswap.block
+docker exec -e "CORE_PEER_LOCALMSPID=${ORG1MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH1}" ${CORE_PEER_ADDRESS01} peer channel join -b ${CHANNEL_NAME}.block
+docker exec -e "CORE_PEER_LOCALMSPID=${ORG1MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH1}" ${CORE_PEER_ADDRESS11} peer channel join -b ${CHANNEL_NAME}.block
 
-docker exec -e "CORE_PEER_LOCALMSPID=${ORG2MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH2}" ${CORE_PEER_ADDRESS02} peer channel join -b validswap.block
-docker exec -e "CORE_PEER_LOCALMSPID=${ORG2MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH2}" ${CORE_PEER_ADDRESS12} peer channel join -b validswap.block
+docker exec -e "CORE_PEER_LOCALMSPID=${ORG2MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH2}" ${CORE_PEER_ADDRESS02} peer channel join -b ${CHANNEL_NAME}.block
+docker exec -e "CORE_PEER_LOCALMSPID=${ORG2MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH2}" ${CORE_PEER_ADDRESS12} peer channel join -b ${CHANNEL_NAME}.block
 
-docker exec -e "CORE_PEER_LOCALMSPID=${ORG3MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH3}" ${CORE_PEER_ADDRESS03} peer channel join -b validswap.block
-docker exec -e "CORE_PEER_LOCALMSPID=${ORG3MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH3}" ${CORE_PEER_ADDRESS13} peer channel join -b validswap.block
+docker exec -e "CORE_PEER_LOCALMSPID=${ORG3MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH3}" ${CORE_PEER_ADDRESS03} peer channel join -b ${CHANNEL_NAME}.block
+docker exec -e "CORE_PEER_LOCALMSPID=${ORG3MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH3}" ${CORE_PEER_ADDRESS13} peer channel join -b ${CHANNEL_NAME}.block
 
 sleep 12
 
 # Update anchor peers
-docker exec -e "CORE_PEER_LOCALMSPID=${ORG1MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH1}" ${CORE_PEER_ADDRESS01} peer channel update -o orderer.valid.swap.com:7050 -c validswap -f /etc/hyperledger/configtx/FoodProducerMSPanchors.tx
-docker exec -e "CORE_PEER_LOCALMSPID=${ORG2MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH2}" ${CORE_PEER_ADDRESS02} peer channel update -o orderer.valid.swap.com:7050 -c validswap -f /etc/hyperledger/configtx/TransporterMSPanchors.tx
-docker exec -e "CORE_PEER_LOCALMSPID=${ORG3MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH3}" ${CORE_PEER_ADDRESS03} peer channel update -o orderer.valid.swap.com:7050 -c validswap -f /etc/hyperledger/configtx/StoreMSPanchors.tx
+docker exec -e "CORE_PEER_LOCALMSPID=${ORG1MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH1}" ${CORE_PEER_ADDRESS01} peer channel update -o orderer.${NAMESPACE}.com:7050 -c ${CHANNEL_NAME} -f /etc/hyperledger/configtx/${ORG1MSP}anchors.tx
+docker exec -e "CORE_PEER_LOCALMSPID=${ORG2MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH2}" ${CORE_PEER_ADDRESS02} peer channel update -o orderer.${NAMESPACE}.com:7050 -c ${CHANNEL_NAME} -f /etc/hyperledger/configtx/${ORG2MSP}anchors.tx
+docker exec -e "CORE_PEER_LOCALMSPID=${ORG3MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH3}" ${CORE_PEER_ADDRESS03} peer channel update -o orderer.${NAMESPACE}.com:7050 -c ${CHANNEL_NAME} -f /etc/hyperledger/configtx/${ORG3MSP}anchors.tx
 
 sleep 15
 
@@ -80,30 +59,30 @@ sleep 15
 CC_SRC_PATH="/opt/gopath/src/github.com/chaincode/validswap/node"
 echo "CC_SRC_PATH:$CC_SRC_PATH"
 
-docker exec -e "CORE_PEER_LOCALMSPID=${ORG1MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH1}" ${CORE_PEER_ADDRESS01} peer chaincode install -l node -n validswap -v 0 -p "$CC_SRC_PATH"
+docker exec -e "CORE_PEER_LOCALMSPID=${ORG1MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH1}" ${CORE_PEER_ADDRESS01} peer chaincode install -l node -n ${NAMESPACE} -v 0 -p "$CC_SRC_PATH"
 docker exec -e "CORE_PEER_LOCALMSPID=${ORG1MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH1}" ${CORE_PEER_ADDRESS01} peer chaincode list --installed
-docker exec -e "CORE_PEER_LOCALMSPID=${ORG1MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH1}" ${CORE_PEER_ADDRESS11} peer chaincode install -l node -n validswap -v 0 -p "$CC_SRC_PATH"
+docker exec -e "CORE_PEER_LOCALMSPID=${ORG1MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH1}" ${CORE_PEER_ADDRESS11} peer chaincode install -l node -n ${NAMESPACE} -v 0 -p "$CC_SRC_PATH"
 docker exec -e "CORE_PEER_LOCALMSPID=${ORG1MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH1}" ${CORE_PEER_ADDRESS11} peer chaincode list --installed
 
 sleep 2
 
-docker exec -e "CORE_PEER_LOCALMSPID=${ORG2MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH2}" ${CORE_PEER_ADDRESS02} peer chaincode install -l node -n validswap -v 0 -p "$CC_SRC_PATH"
+docker exec -e "CORE_PEER_LOCALMSPID=${ORG2MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH2}" ${CORE_PEER_ADDRESS02} peer chaincode install -l node -n ${NAMESPACE} -v 0 -p "$CC_SRC_PATH"
 docker exec -e "CORE_PEER_LOCALMSPID=${ORG2MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH2}" ${CORE_PEER_ADDRESS02} peer chaincode list --installed
-docker exec -e "CORE_PEER_LOCALMSPID=${ORG2MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH2}" ${CORE_PEER_ADDRESS12} peer chaincode install -l node -n validswap -v 0 -p "$CC_SRC_PATH"
+docker exec -e "CORE_PEER_LOCALMSPID=${ORG2MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH2}" ${CORE_PEER_ADDRESS12} peer chaincode install -l node -n ${NAMESPACE} -v 0 -p "$CC_SRC_PATH"
 docker exec -e "CORE_PEER_LOCALMSPID=${ORG2MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH2}" ${CORE_PEER_ADDRESS12} peer chaincode list --installed
 
 sleep 2
 
-docker exec -e "CORE_PEER_LOCALMSPID=${ORG3MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH3}" ${CORE_PEER_ADDRESS03} peer chaincode install -l node -n validswap -v 0 -p "$CC_SRC_PATH"
+docker exec -e "CORE_PEER_LOCALMSPID=${ORG3MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH3}" ${CORE_PEER_ADDRESS03} peer chaincode install -l node -n ${NAMESPACE} -v 0 -p "$CC_SRC_PATH"
 docker exec -e "CORE_PEER_LOCALMSPID=${ORG3MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH3}" ${CORE_PEER_ADDRESS03} peer chaincode list --installed
-docker exec -e "CORE_PEER_LOCALMSPID=${ORG3MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH3}" ${CORE_PEER_ADDRESS13} peer chaincode install -l node -n validswap -v 0 -p "$CC_SRC_PATH"
+docker exec -e "CORE_PEER_LOCALMSPID=${ORG3MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH3}" ${CORE_PEER_ADDRESS13} peer chaincode install -l node -n ${NAMESPACE} -v 0 -p "$CC_SRC_PATH"
 docker exec -e "CORE_PEER_LOCALMSPID=${ORG3MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH3}" ${CORE_PEER_ADDRESS13} peer chaincode list --installed
-docker exec -e "CORE_PEER_LOCALMSPID=${ORG3MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH3}" ${CORE_PEER_ADDRESS13} peer channel list --orderer orderer.valid.swap.com:7050
+docker exec -e "CORE_PEER_LOCALMSPID=${ORG3MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH3}" ${CORE_PEER_ADDRESS13} peer channel list --orderer orderer.${NAMESPACE}.com:7050
 
 sleep 2
 
 # Instantiate chaincode
-docker exec -e "CORE_PEER_LOCALMSPID=${ORG1MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH1}" ${CORE_PEER_ADDRESS01} peer chaincode instantiate -o orderer.valid.swap.com:7050 -C validswap -n validswap -l node -v 0 -c '{"Args":["validswapcontract:instantiate"]}' -P "OR('FoodProducerMSP.peer', 'TransporterMSP.peer', 'StoreMSP.peer')"
+docker exec -e "CORE_PEER_LOCALMSPID=${ORG1MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH1}" ${CORE_PEER_ADDRESS01} peer chaincode instantiate -o orderer.${NAMESPACE}.com:7050 -C ${CHANNEL_NAME} -n ${NAMESPACE} -l node -v 0 -c '{'Args':['${CONTRACT_NAME}:instantiate']}' -P "OR('${ORG1MSP}.peer', '${ORG2MSP}.peer', '${ORG3MSP}.peer')"
 sleep 10
 
 #docker exec -e "CORE_PEER_LOCALMSPID=${ORG1MSP}" -e "CORE_PEER_MSPCONFIGPATH=${CORE_PEER_MSPCONFIGPATH1}" ${CORE_PEER_ADDRESS01} peer chaincode invoke -o orderer.valid.swap.com:7050 -C validswap -n validswap -c '{"function":"createAsset","Args":["owner1", "1", "Apples", "food", "issueDateTime", "expirationDateTime", "cost", "description"]}'

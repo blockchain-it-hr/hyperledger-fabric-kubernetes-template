@@ -12,10 +12,10 @@ set -e
 
 rm -rf blockchain/configuration/crypto-config
 rm -rf blockchain/configuration/channel-artifacts
-rm -rf blockchain/configuration/org.private.data.marketplace.com
+rm -rf blockchain/configuration/org.*
 rm -rf blockchain/configuration/chaincode
 rm -rf blockchain/configuration/blockchain
-rm -rf blockchain/configuration/orderer.private.data.marketplace.com
+rm -rf blockchain/configuration/orderer.*
 rm -rf blockchain/configuration/configx
 rm -rf blockchain/chaincode
 rm -rf backend/wallet
