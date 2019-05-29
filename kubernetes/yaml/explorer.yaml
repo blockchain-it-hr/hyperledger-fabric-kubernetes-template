@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: blockchain-explorer-db
+  labels:
+    run: explorer-db
+spec:
+  type: ClusterIP 
+  selector:
+    name: explorer-db
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432 
+    name: pgsql
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: blockchain-explorer-db
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: explorer-db
+    spec:
+      volumes:
+      - name: fabricfiles
+        persistentVolumeClaim:
+          claimName: fabric-pvc
+
+      containers:
+      - name: postgres
+        image: postgres:10.4-alpine
+        env:
+        - name: TZ
+          value: "America/Sao_Paulo"
+        - name: DATABASE_DATABASE
+          value: fabricexplorer
+        - name: DATABASE_USERNAME
+          value: hppoc
+        - name: DATABASE_PASSWORD
+          value: password
+        volumeMounts:
+        - mountPath: /fabric
+          name: fabricfiles
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: blockchain-explorer-app
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: explorer
+    spec:
+      volumes:
+      - name: fabricfiles
+        persistentVolumeClaim:
+          claimName: fabric-pvc
+
+      containers:
+      - name: explorer
+        image: hyperledger/explorer:latest
+        command: ["sh" , "-c" , "/fabric/config/explorer/app/run.sh"]
+        env:
+        - name: TZ
+          value: "America/Sao_Paulo"
+        - name: DATABASE_HOST
+          value: blockchain-explorer-db
+        - name: DATABASE_USERNAME
+          value: hppoc
+        - name: DATABASE_PASSWORD
+          value: password
+        volumeMounts:
+        - mountPath: /fabric
+          name: fabricfiles
+
