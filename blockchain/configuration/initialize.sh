@@ -295,15 +295,15 @@ function replacePrivateKey() {
   # The next steps will replace the template's contents with the
   # actual values of the private key file names for the two CAs.
   CURRENT_DIR=$PWD
-  cd crypto-config/peerOrganizations/buyer.private.data.marketplace.com/ca/
+  cd crypto-config/peerOrganizations/`${ORG1}`.`${NAMESPACE}`.com/ca/
   PRIV_KEY=$(ls *_sk)
   cd "$CURRENT_DIR"
   sed $OPTS "s/CA1_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-e2e.yaml
-  cd crypto-config/peerOrganizations/seller.private.data.marketplace.com/ca/
+  cd crypto-config/peerOrganizations/${ORG2}.${NAMESPACE}.com/ca/
   PRIV_KEY=$(ls *_sk)
   cd "$CURRENT_DIR"
   sed $OPTS "s/CA2_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-e2e.yaml
-  cd crypto-config/peerOrganizations/observer.private.data.marketplace.com/ca/
+  cd crypto-config/peerOrganizations/${ORG3}.${NAMESPACE}.com/ca/
   PRIV_KEY=$(ls *_sk)
   cd "$CURRENT_DIR"
   sed $OPTS "s/CA3_PRIVATE_KEY/${PRIV_KEY}/g" docker-compose-e2e.yaml
@@ -324,7 +324,7 @@ function replacePrivateKey() {
 # Organizations and the components that belong to those Organizations.  Each
 # Organization is provisioned a unique root certificate (``ca-cert``), that binds
 # specific components (peers and orderers) to that Org.  Transactions and communications
-# within Fabric are signed by an entity's private key (``keyobserver``), and then verified
+# within Fabric are signed by an entity's private key (``key${ORG3}``), and then verified
 # by means of a public key (``signcerts``).  You will notice a "count" variable within
 # this file.  We use this to specify the number of peers per Organization; in our
 # case it's two peers per Org.  The rest of this template is extremely
@@ -378,7 +378,7 @@ function generateCerts() {
 # our artifacts.  This file also contains two additional specifications that are worth
 # noting.  Firstly, we specify the anchor peers for each Peer Org
 # (``peer0.org1.example.com`` & ``peer0.org2.example.com``).  Secondly, we point to
-# the location of the MSP directory for each member, in turn allowing us to observer the
+# the location of the MSP directory for each member, in turn allowing us to ${ORG3}} the
 # root certificates for each Org in the orderer genesis block.  This is a critical
 # concept. Now any network entity communicating with the ordering service can have
 # its digital signature verified.
@@ -494,7 +494,7 @@ CLI_TIMEOUT=10
 # default for delay between commands
 CLI_DELAY=3
 # channel name defaults to "mychannel"
-CHANNEL_NAME="privatedatamarketplace"
+CHANNEL_NAME=${CHANNEL_NAME}
 # use this as the default docker-compose yaml definition
 COMPOSE_FILE=docker-compose-e2e.yaml
 #

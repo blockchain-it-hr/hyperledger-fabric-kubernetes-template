@@ -6,9 +6,13 @@ echo "/ ___|  |_   _|    / \    |  _ \  |_   _|"
 echo "\___ \    | |     / _ \   | |_) |   | |  "
 echo " ___) |   | |    / ___ \  |  _ <    | |  "
 echo "|____/    |_|   /_/   \_\ |_| \_\   |_|  "
-echo $
+echo 
 
+. ./.env
+
+echo ${INSTALLATION_PATH}
 cd ${INSTALLATION_PATH}
+echo $PWD
 
 ./initialize.sh generate
 ./initialize.sh up -l node

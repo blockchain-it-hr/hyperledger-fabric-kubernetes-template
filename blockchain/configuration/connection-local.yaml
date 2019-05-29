@@ -31,43 +31,43 @@ client:
 channels:
   validswap:
     orderers:
-    - orderer.private.data.marketplace.com
+    - orderer.${NAMESPACE}.com
     peers:
-      peer0.buyer.private.data.marketplace.com:
+      peer0.buyer.${NAMESPACE}.com:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
         eventSource: true
 
-      peer1.buyer.private.data.marketplace.com:
-        endorsingPeer: true
-        chaincodeQuery: true
-        ledgerQuery: true
-        eventSource: true
-
-
-      peer0.seller.private.data.marketplace.com:
+      peer1.buyer.${NAMESPACE}.com:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
         eventSource: true
 
 
-      peer1.seller.private.data.marketplace.com:
+      peer0.seller.${NAMESPACE}.com:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
         eventSource: true
 
 
-      peer0.observer.private.data.marketplace.com:
+      peer1.seller.${NAMESPACE}.com:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
         eventSource: true
 
 
-      peer1.observer.private.data.marketplace.com:
+      peer0.observer.${NAMESPACE}.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+
+      peer1.observer.${NAMESPACE}.com:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
@@ -77,10 +77,10 @@ organizations:
   Buyer:
     mspid: BuyerMSP
     peers:
-    - peer0.buyer.private.data.marketplace.com
-    - peer1.buyer.private.data.marketplace.com
+    - peer0.buyer.${NAMESPACE}.com
+    - peer1.buyer.${NAMESPACE}.com
     certificateAuthorities:
-    - ca.buyer.private.data.marketplace.com
+    - ca.buyer.${NAMESPACE}.com
     #adminPrivateKey:
     #  path: commercial-paper/organization/magnetocorp/users/Admin@magnetocorp/keyobserver/9022d671ceedbb24af3ea69b5a8136cc64203df6b9920e26f48123fcfcb1d2e9_sk
     #signedCert:
@@ -89,62 +89,62 @@ organizations:
   Seller:
     mspid: SellerMSP
     peers:
-    - peer0.seller.private.data.marketplace.com
-    - peer1.seller.private.data.marketplace.com
+    - peer0.seller.${NAMESPACE}.com
+    - peer1.seller.${NAMESPACE}.com
     certificateAuthorities:
-    - ca.seller.private.data.marketplace.com
+    - ca.seller.${NAMESPACE}.com
 
   Observer:
     mspid: ObserverMSP
     peers:
-    - peer0.observer.private.data.marketplace.com
-    - peer1.observer.private.data.marketplace.com
+    - peer0.observer.${NAMESPACE}.com
+    - peer1.observer.${NAMESPACE}.com
     certificateAuthorities:
-    - ca.observer.private.data.marketplace.com
+    - ca.observer.${NAMESPACE}.com
 
 orderers:
-  orderer.private.data.marketplace.com:
+  orderer.${NAMESPACE}.com:
     url: grpc://localhost:7050
     grpcOptions:
-      ssl-target-name-override: orderer.private.data.marketplace.com
+      ssl-target-name-override: orderer.${NAMESPACE}.com
     #tlsCACerts:
     #  path: comercial-paper/organization/magnetocorp/orderer/orderer.magnetocorp.com/tlscacerts/example.com-cert.pem
 
 peers:
-  peer0.buyer.private.data.marketplace.com:
+  peer0.buyer.${NAMESPACE}.com:
     url: grpc://localhost:7051
     grpcOptions:
-      ssl-target-name-override: peer0.buyer.private.data.marketplace.com
+      ssl-target-name-override: peer0.buyer.${NAMESPACE}.com
       request-timeout: 120
 
-  peer1.buyer.private.data.marketplace.com:
+  peer1.buyer.${NAMESPACE}.com:
     url: grpc://localhost:8051
     grpcOptions:
-      ssl-target-name-override: peer1.buyer.private.data.marketplace.com
+      ssl-target-name-override: peer1.buyer.${NAMESPACE}.com
       request-timeout: 120
 
-  peer0.seller.private.data.marketplace.com:
+  peer0.seller.${NAMESPACE}.com:
     url: grpc://localhost:9051
     grpcOptions:
-      ssl-target-name-override: peer0.seller.private.data.marketplace.com
+      ssl-target-name-override: peer0.seller.${NAMESPACE}.com
       request-timeout: 120
 
-  peer1.seller.private.data.marketplace.com:
+  peer1.seller.${NAMESPACE}.com:
     url: grpc://localhost:10051
     grpcOptions:
-      ssl-target-name-override: peer1.seller.private.data.marketplace.com
+      ssl-target-name-override: peer1.seller.${NAMESPACE}.com
       request-timeout: 120
 
-  peer0.observer.private.data.marketplace.com:
+  peer0.observer.${NAMESPACE}.com:
     url: grpc://localhost:11051
     grpcOptions:
-      ssl-target-name-override: peer0.observer.private.data.marketplace.com
+      ssl-target-name-override: peer0.observer.${NAMESPACE}.com
       request-timeout: 120
 
-  peer1.observer.private.data.marketplace.com:
+  peer1.observer.${NAMESPACE}.com:
     url: grpc://localhost:12051
     grpcOptions:
-      ssl-target-name-override: peer0.observer.private.data.marketplace.com
+      ssl-target-name-override: peer0.observer.${NAMESPACE}.com
       request-timeout: 120
 
 #
@@ -153,7 +153,7 @@ peers:
 # Certificate Authority instead of Fabric-CA, in which case this section would not be specified.
 #
 certificateAuthorities:
-  ca.buyer.private.data.marketplace.com:
+  ca.buyer.${NAMESPACE}.com:
     url: http://localhost:7054
     #httpOptions:
     #  verify: false
@@ -164,9 +164,9 @@ certificateAuthorities:
     #- enrollId: admin
     #  enrollSecret: adminpw
     # [Optional] The optional name of the CA.
-    caName: ca.buyer.private.data.marketplace.com
+    caName: ca.buyer.${NAMESPACE}.com
 
-  ca.seller.private.data.marketplace.com:
+  ca.seller.${NAMESPACE}.com:
     url: http://localhost:8054
     #httpOptions:
     #  verify: false
@@ -177,9 +177,9 @@ certificateAuthorities:
     #- enrollId: admin
     #  enrollSecret: adminpw
     # [Optional] The optional name of the CA.
-    caName: ca.seller.private.data.marketplace.com
+    caName: ca.seller.${NAMESPACE}.com
 
-  ca.observer.private.data.marketplace.com:
+  ca.observer.${NAMESPACE}.com:
     url: http://localhost:9054
     #httpOptions:
     #  verify: false
@@ -190,4 +190,4 @@ certificateAuthorities:
     #- enrollId: admin
     #  enrollSecret: adminpw
     # [Optional] The optional name of the CA.
-    caName: ca.observer.private.data.marketplace.com
+    caName: ca.observer.${NAMESPACE}.com

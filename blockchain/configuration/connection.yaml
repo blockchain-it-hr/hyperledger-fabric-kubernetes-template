@@ -3,151 +3,130 @@ x-type: "hlfv1"
 description: "A gateway connection file for the Private data marketplace networks"
 version: "1.0"
 client:
-  organization: Buyer
+  organization: ${ORG1}
   connection:
     timeout:
       peer:
         endorser: 300
       orderer: 300
 
-# Some SDKs support pluggable KV observer., the properties under "credentialStore"
-# are implementation specific
-#credentialStore:
-# [Optional]. Specific to FileKeyValueStore.js or similar implementations in other SDKs. Can be others
-# if using an alternative impl. For instance, CouchDBKeyValueStore.js would require an object
-# here for properties like url, db name, etc.
-#path: "/tmp/hfc-kvs"a
-
-# [Optional]. Specific to the CryptoSuite implementation. Software-based implementations like
-# CryptoSuite_ECDSA_AES.js in node SDK requires a key observer. PKCS#11 based implementations does
-# not.
-#cryptoStore:
-# Specific to the underlying KeyValueStore that backs the crypto key observer.
-#path: "/tmp/hfc-cvs"
-
-# [Optional]. Specific to Composer environmentf
-#wallet: wallet-name
-
 channels:
-  privatedatamarketplace:
+  ${CHANNEL_NAME}:
     orderers:
-    - orderer.private.data.marketplace.com
+    - orderer.${PROJECT_NAME}.com
     peers:
-      peer0.buyer.private.data.marketplace.com:
+      peer0.${ORG1}.${PROJECT_NAME}.com:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
         eventSource: true
 
-      peer1.buyer.private.data.marketplace.com:
-        endorsingPeer: true
-        chaincodeQuery: true
-        ledgerQuery: true
-        eventSource: true
-
-
-      peer0.seller.private.data.marketplace.com:
+      peer1.${ORG1}.${PROJECT_NAME}.com:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
         eventSource: true
 
 
-      peer1.seller.private.data.marketplace.com:
+      peer0.${ORG2}.${PROJECT_NAME}.com:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
         eventSource: true
 
 
-      peer0.observer.private.data.marketplace.com:
+      peer1.${ORG2}.${PROJECT_NAME}.com:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
         eventSource: true
 
 
-      peer1.observer.private.data.marketplace.com:
+      peer0.${ORG3}.${PROJECT_NAME}.com:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
         eventSource: true
 
-    #chaincodes:
-    #- private-data-marketplace:0
+
+      peer1.${ORG3}.${PROJECT_NAME}.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
 
 organizations:
-  Buyer:
-    mspid: BuyerMSP
+  ${ORG1}:
+    mspid: ${ORG1MSP}
     peers:
-    - peer0.buyer.private.data.marketplace.com
-    - peer1.buyer.private.data.marketplace.com
+    - peer0.${ORG1}.${PROJECT_NAME}.com
+    - peer1.${ORG1}.${PROJECT_NAME}.com
     certificateAuthorities:
-    - ca.buyer.private.data.marketplace.com
+    - ca.${ORG1}.${PROJECT_NAME}.com
     #adminPrivateKey:
     #  path: commercial-paper/organization/magnetocorp/users/Admin@magnetocorp/keystore/9022d671ceedbb24af3ea69b5a8136cc64203df6b9920e26f48123fcfcb1d2e9_sk
     #signedCert:
     #  path: comercial-paper/organization/magnetocorp/users/Admin@magnetocorp.com/signcerts/Admin@magnetocorp.com-cert.pem
 
-  Seller:
-    mspid: SellerMSP
+  ${ORG2}:
+    mspid: ${ORG2MSP}
     peers:
-    - peer0.seller.private.data.marketplace.com
-    - peer1.seller.private.data.marketplace.com
+    - peer0.${ORG2}.${PROJECT_NAME}.com
+    - peer1.${ORG2}.${PROJECT_NAME}.com
     certificateAuthorities:
-    - ca.seller.private.data.marketplace.com
+    - ca.${ORG2}.${PROJECT_NAME}.com
 
-  Observer:
+  ${ORG3}:
     mspid: ObserverMSP
     peers:
-    - peer0.observer.private.data.marketplace.com
-    - peer1.observer.private.data.marketplace.com
+    - peer0.${ORG3}.${PROJECT_NAME}.com
+    - peer1.${ORG3}.${PROJECT_NAME}.com
     certificateAuthorities:
-    - ca.observer.private.data.marketplace.com
+    - ca.${ORG3}.${PROJECT_NAME}.com
 
 orderers:
-  orderer.private.data.marketplace.com:
-    url: grpc://orderer.private.data.marketplace.com:7050
+  orderer.${PROJECT_NAME}.com:
+    url: grpc://orderer.${PROJECT_NAME}.com:7050
     grpcOptions:
-      ssl-target-name-override: orderer.private.data.marketplace.com
+      ssl-target-name-override: orderer.${PROJECT_NAME}.com
     #tlsCACerts:
     #  path: comercial-paper/organization/magnetocorp/orderer/orderer.magnetocorp.com/tlscacerts/example.com-cert.pem
 
 peers:
-  peer0.buyer.private.data.marketplace.com:
-    url: grpc://peer0.buyer.private.data.marketplace.com:7051
+  peer0.${ORG1}.${PROJECT_NAME}.com:
+    url: grpc://peer0.${ORG1}.${PROJECT_NAME}.com:7051
     grpcOptions:
-      ssl-target-name-override: peer0.buyer.private.data.marketplace.com
+      ssl-target-name-override: peer0.${ORG1}.${PROJECT_NAME}.com
       request-timeout: 120
 
-  peer1.buyer.private.data.marketplace.com:
-    url: grpc://peer1.buyer.private.data.marketplace.com:7051
+  peer1.${ORG1}.${PROJECT_NAME}.com:
+    url: grpc://peer1.${ORG1}.${PROJECT_NAME}.com:7051
     grpcOptions:
-      ssl-target-name-override: peer1.buyer.private.data.marketplace.com
+      ssl-target-name-override: peer1.${ORG1}.${PROJECT_NAME}.com
       request-timeout: 120
 
-  peer0.seller.private.data.marketplace.com:
-    url: grpc://peer0.seller.private.data.marketplace.com:7051
+  peer0.${ORG2}.${PROJECT_NAME}.com:
+    url: grpc://peer0.${ORG2}.${PROJECT_NAME}.com:7051
     grpcOptions:
-      ssl-target-name-override: peer0.seller.private.data.marketplace.com
+      ssl-target-name-override: peer0.${ORG2}.${PROJECT_NAME}.com
       request-timeout: 120
 
-  peer1.seller.private.data.marketplace.com:
-    url: grpc://peer1.seller.private.data.marketplace.com:7051
+  peer1.${ORG2}.${PROJECT_NAME}.com:
+    url: grpc://peer1.${ORG2}.${PROJECT_NAME}.com:7051
     grpcOptions:
-      ssl-target-name-override: peer1.seller.private.data.marketplace.com
+      ssl-target-name-override: peer1.${ORG2}.${PROJECT_NAME}.com
       request-timeout: 120
 
-  peer0.observer.private.data.marketplace.com:
-    url: grpc://peer0.observer.private.data.marketplace.com:7051
+  peer0.${ORG3}.${PROJECT_NAME}.com:
+    url: grpc://peer0.${ORG3}.${PROJECT_NAME}.com:7051
     grpcOptions:
-      ssl-target-name-override: peer0.observer.private.data.marketplace.com
+      ssl-target-name-override: peer0.${ORG3}.${PROJECT_NAME}.com
       request-timeout: 120
 
-  peer1.observer.private.data.marketplace.com:
-    url: grpc://peer1.observer.private.data.marketplace.com:7051
+  peer1.${ORG3}.${PROJECT_NAME}.com:
+    url: grpc://peer1.${ORG3}.${PROJECT_NAME}.com:7051
     grpcOptions:
-      ssl-target-name-override: peer0.observer.private.data.marketplace.com
+      ssl-target-name-override: peer0.${ORG3}.${PROJECT_NAME}.com
       request-timeout: 120
 
 #
@@ -156,8 +135,8 @@ peers:
 # Certificate Authority instead of Fabric-CA, in which case this section would not be specified.
 #
 certificateAuthorities:
-  ca.buyer.private.data.marketplace.com:
-    url: http://ca.buyer.private.data.marketplace.com:7054
+  ca.${ORG1}.${PROJECT_NAME}.com:
+    url: http://ca.${ORG1}.${PROJECT_NAME}.com:7054
     #httpOptions:
     #  verify: false
     #tlsCACerts:
@@ -167,10 +146,10 @@ certificateAuthorities:
     #- enrollId: admin
     #  enrollSecret: adminpw
     # [Optional] The optional name of the CA.
-    caName: ca.buyer.private.data.marketplace.com
+    caName: ca.${ORG1}.${PROJECT_NAME}.com
 
-  ca.seller.private.data.marketplace.com:
-    url: http://ca.seller.private.data.marketplace.com:7054
+  ca.${ORG2}.${PROJECT_NAME}.com:
+    url: http://ca.${ORG2}.${PROJECT_NAME}.com:7054
     #httpOptions:
     #  verify: false
     #tlsCACerts:
@@ -180,10 +159,10 @@ certificateAuthorities:
     #- enrollId: admin
     #  enrollSecret: adminpw
     # [Optional] The optional name of the CA.
-    caName: ca.seller.private.data.marketplace.com
+    caName: ca.${ORG2}.${PROJECT_NAME}.com
 
-  ca.observer.private.data.marketplace.com:
-    url: http://ca.observer.private.data.marketplace.com:7054
+  ca.${ORG3}.${PROJECT_NAME}.com:
+    url: http://ca.${ORG3}.${PROJECT_NAME}.com:7054
     #httpOptions:
     #  verify: false
     #tlsCACerts:
@@ -193,4 +172,4 @@ certificateAuthorities:
     #- enrollId: admin
     #  enrollSecret: adminpw
     # [Optional] The optional name of the CA.
-    caName: ca.observer.private.data.marketplace.com
+    caName: ca.${ORG3}.${PROJECT_NAME}.com

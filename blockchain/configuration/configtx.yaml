@@ -9,7 +9,7 @@
 Orderer: &OrdererDefaults
   OrdererType: solo
   Addresses:
-  - orderer.private.data.marketplace.com:7050
+  - orderer.${NAMESPACE}.com:7050
   BatchTimeout: 5s
   BatchSize:
     MaxMessageCount: 10
@@ -40,7 +40,7 @@ Organizations:
 - &OrdererOrg
   Name: OrdererOrg
   ID: OrdererMSP
-  MSPDir: crypto-config/ordererOrganizations/private.data.marketplace.com/msp
+  MSPDir: crypto-config/ordererOrganizations/${NAMESPACE}.com/msp
   Policies:
     Readers:
       Type: Signature
@@ -52,64 +52,64 @@ Organizations:
       Type: Signature
       Rule: "OR('OrdererMSP.admin')"
 
-- &Buyer
-  Name: BuyerMSP
-  ID: BuyerMSP
-  MSPDir: crypto-config/peerOrganizations/buyer.private.data.marketplace.com/msp
+- &${ORG1}
+  N${ORG2}{ORG1MSP}
+  I${ORG3}1MSP}
+  MSPDir: crypto-config/peerOrganizations/${ORG1}.${NAMESPACE}.com/msp
   Policies:
     Readers:
       Type: Signature
-      Rule: "OR('BuyerMSP.admin', 'BuyerMSP.peer', 'BuyerMSP.client')"
+      Rule: "OR('${ORG1MSP}.admin', '${ORG1MSP}.peer', '${ORG1MSP}.client')"
     Writers:
       Type: Signature
-      Rule: "OR('BuyerMSP.admin', 'BuyerMSP.client')"
+      Rule: "OR('${ORG1MSP}.admin', '${ORG1MSP}.client')"
     Admins:
       Type: Signature
-      Rule: "OR('BuyerMSP.admin')"
+      Rule: "OR('${ORG1MSP}.admin')"
   AnchorPeers:
-  - Host: peer0.buyer.private.data.marketplace.com
+  - Host: peer0.${ORG1}.${NAMESPACE}.com
     Port: 7051
-  - Host: peer1.buyer.private.data.marketplace.com
+  - Host: peer1.${ORG1}.${NAMESPACE}.com
     Port: 7051
 
 - &Seller
-  Name: SellerMSP
-  ID: SellerMSP
-  MSPDir: crypto-config/peerOrganizations/seller.private.data.marketplace.com/msp
+  Name: ${ORG2MSP}
+  ID: ${ORG2MSP}
+  MSPDir: crypto-config/peerOrganizations/${ORG2}.${NAMESPACE}.com/msp
   Policies:
     Readers:
       Type: Signature
-      Rule: "OR('SellerMSP.admin', 'SellerMSP.peer', 'SellerMSP.client')"
+      Rule: "OR('${ORG2MSP}.admin', '${ORG2MSP}.peer', '${ORG2MSP}.client')"
     Writers:
       Type: Signature
-      Rule: "OR('SellerMSP.admin', 'SellerMSP.client')"
+      Rule: "OR('${ORG2MSP}.admin', '${ORG2MSP}.client')"
     Admins:
       Type: Signature
-      Rule: "OR('SellerMSP.admin')"
+      Rule: "OR('${ORG2MSP}.admin')"
   AnchorPeers:
-  - Host: peer0.seller.private.data.marketplace.com
+  - Host: peer0.${ORG2}.${NAMESPACE}.com
     Port: 7051
-  - Host: peer1.seller.private.data.marketplace.com
+  - Host: peer1.${ORG2}.${NAMESPACE}.com
     Port: 7051
 
 - &Observer
-  Name: ObserverMSP
-  ID: ObserverMSP
-  MSPDir: crypto-config/peerOrganizations/observer.private.data.marketplace.com/msp
+  Name: ${ORG3MSP}
+  ID: ${ORG3MSP}
+  MSPDir: crypto-config/peerOrganizations/${ORG3}.${NAMESPACE}.com/msp
   Policies:
     Readers:
       Type: Signature
-      Rule: "OR('ObserverMSP.admin', 'ObserverMSP.peer', 'ObserverMSP.client')"
+      Rule: "OR('${ORG3MSP}.admin', '${ORG3MSP}.peer', '${ORG3MSP}.client')"
     Writers:
       Type: Signature
-      Rule: "OR('ObserverMSP.admin', 'ObserverMSP.client')"
+      Rule: "OR('${ORG3MSP}.admin', '${ORG3MSP}.client')"
     Admins:
       Type: Signature
-      Rule: "OR('ObserverMSP.admin')"
+      Rule: "OR('${ORG3MSP}.admin')"
   AnchorPeers:
-  - Host: peer0.observer.private.data.marketplace.com
+  - Host: peer0.${ORG3}.${NAMESPACE}.com
     Port: 7051
-  - Host: peer1.observer.private.data.marketplace.com
+  - Host: peer1.${ORG3}.${NAMESPACE}.com
     Port: 7051
 
 ################################################################################
@@ -205,19 +205,19 @@ Profiles:
       Capabilities:
         <<: *OrdererCapabilities
     Consortiums:
-      PrivateDataMarketplaceConsortium:
+      ${CONSORTIUM_NAME}:
         Organizations:
-        - *Buyer
-        - *Seller
-        - *Observer
+        - *${ORG1}
+        - *${ORG2}
+        - *${ORG3}
   ThreeOrgChannel:
-    Consortium: PrivateDataMarketplaceConsortium
+    Consortium: ${CONSORTIUM_NAME}
     Application:
       <<: *ApplicationDefaults
       Organizations:
-      - *Buyer
-      - *Seller
-      - *Observer
+      - *${ORG1}
+      - *${ORG2}
+      - *${ORG3}
       Capabilities:
         <<: *ApplicationCapabilities
 

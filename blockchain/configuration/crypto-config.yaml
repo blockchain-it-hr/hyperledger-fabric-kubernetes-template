@@ -1,26 +1,26 @@
 OrdererOrgs:
   - Name: Orderer
-    Domain: private.data.marketplace.com
+    Domain: "{{ NAMESPACE }}.com"
     Specs:
       - Hostname: orderer
 
 PeerOrgs:
-  - Name: Buyer
-    Domain: buyer.private.data.marketplace.com
+  - Name: '{{ORG1}}'
+    Domain: "{{ORG1}}.{{NAMESPACE}}.com"
     EnableNodeOUs: true
     Template:
       Count: 2
     Users:
       Count: 2
-  - Name: Seller
-    Domain: seller.private.data.marketplace.com
+  - Name: '${ORG2}'
+    Domain: '${ORG2}.${NAMESPACE}.com'
     EnableNodeOUs: true
     Template:
       Count: 2
     Users:
       Count: 2
-  - Name: Observer
-    Domain: observer.private.data.marketplace.com
+  - Name: '${ORG3}'
+    Domain: '${ORG3}.${NAMESPACE}.com'
     EnableNodeOUs: true
     Template:
       Count: 2
