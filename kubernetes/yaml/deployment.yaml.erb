@@ -1,0 +1,30 @@
+<%
+def set_node_template_vars(values)
+  return
+end
+-%>
+<%- @organizations.each do |organization| -%>
+  <
+<%= set_node_template_vars(organization.values.first) -%>
+apiVersion: v1
+kind: Service
+metadata:
+  name: <%= @peer.selector %>
+  labels:
+    run: <%= @selector %>
+spec:
+  type: ClusterIP 
+  selector:
+    name: <%= @name %>
+  ports:
+  - protocol: TCP
+    port: 30110
+    name: grpc
+  - protocol: TCP
+    port: 30111
+    name: events
+  - protocol: TCP
+    port: 5984
+    name: couchdb
+---
+<% end -%>

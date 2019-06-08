@@ -1,3 +1,8 @@
+<%
+def set_node_template_vars(values)
+  return
+end
+-%>
 apiVersion: v1
 kind: Service
 metadata:
@@ -37,11 +42,11 @@ spec:
         - name: TZ
           value: "America/Sao_Paulo"
         - name: DATABASE_DATABASE
-          value: fabricexplorer
+          value: <%= @config["databaseUsername"] %>
         - name: DATABASE_USERNAME
-          value: hppoc
+          value: <%= @config["databaseUsername"] %>
         - name: DATABASE_PASSWORD
-          value: password
+          value:  <%= @config["databasePassword"] %>
         volumeMounts:
         - mountPath: /fabric
           name: fabricfiles
@@ -70,11 +75,11 @@ spec:
         - name: TZ
           value: "America/Sao_Paulo"
         - name: DATABASE_HOST
-          value: blockchain-explorer-db
+          value: <%= @config["databaseHost"] %>
         - name: DATABASE_USERNAME
-          value: hppoc
+          value: <%= @config["databaseUsername"] %>
         - name: DATABASE_PASSWORD
-          value: password
+          value: <%= @config["databasePassword"] %>
         volumeMounts:
         - mountPath: /fabric
           name: fabricfiles

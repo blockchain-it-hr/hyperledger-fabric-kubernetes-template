@@ -37,11 +37,11 @@ spec:
         - name: TZ
           value: "America/Sao_Paulo"
         - name: DATABASE_DATABASE
-          value: fabricexplorer
+          value: hppoc
         - name: DATABASE_USERNAME
           value: hppoc
         - name: DATABASE_PASSWORD
-          value: password
+          value:  password
         volumeMounts:
         - mountPath: /fabric
           name: fabricfiles

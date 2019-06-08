@@ -1,3 +1,10 @@
+<%
+def set_node_template_vars(values)
+  @version         = values["version"]
+  @hostname        = values["hostname"]
+  return
+end
+-%>
 kind: PersistentVolume
 apiVersion: v1
 metadata:
@@ -14,7 +21,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     path: /nfs/fabric
-    server: storage.local.parisi.biz
+    server: <%= @config["hostname"] %>
     readOnly: false
 ---
 kind: PersistentVolumeClaim

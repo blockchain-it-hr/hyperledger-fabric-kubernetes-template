@@ -4,25 +4,18 @@ require "yaml"
 require "erb"
 
 # generic variables
-@config     = YAML.load_file("kuberneteth.yaml")
-@nodes      = @config["nodes"]
+@config = YAML.load_file("kuberneteth.yaml")
+@organizations = @config["organizations"]
 
 #####################################################################
 # Create config files for each node
 #####################################################################
 
 def set_node_template_vars(values)
-  @version         = values["version"]
+  @version = values["version"]
+  @organizations = values["organizations"]
   return
 end
-
-#@nodes.each do |node|
-#  set_node_template_vars(node.values.first)
-#
-#  File.open("#{@Node_UserIdent}.toml", "w") do |f|
-#    f.puts (ERB.new(File.read("node.toml.erb"), nil, "-").result)
-#  end
-#end
 
 #####################################################################
 # Claims

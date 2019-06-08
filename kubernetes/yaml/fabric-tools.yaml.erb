@@ -1,10 +1,10 @@
 <%
 def set_node_template_vars(values)
-  @version         = values["geth"]["Eth_Etherbase"]
+  @version         = values["version"]
+  @hostname        = values["hostname"]
   return
 end
 -%>
----
 apiVersion: v1
 kind: Pod
 metadata:

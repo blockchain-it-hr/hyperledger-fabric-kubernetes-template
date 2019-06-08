@@ -31,7 +31,7 @@ spec:
 
       containers:
       - name: orderer
-        image: hyperledger/fabric-orderer:amd64-1.3.0
+        image: hyperledger/fabric-orderer:amd64-1.4.0
         command: ["sh", "-c", "orderer"]
         env:
         - name: TZ

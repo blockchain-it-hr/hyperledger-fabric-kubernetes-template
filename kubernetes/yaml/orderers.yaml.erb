@@ -1,3 +1,9 @@
+<%
+def set_node_template_vars(values)
+  @version         = values["geth"]["Eth_Etherbase"]
+  return
+end
+-%>
 apiVersion: v1
 kind: Service
 metadata:
@@ -31,7 +37,7 @@ spec:
 
       containers:
       - name: orderer
-        image: hyperledger/fabric-orderer:amd64-1.3.0
+        image: hyperledger/fabric-orderer:amd64-<%= @config["version"] %>
         command: ["sh", "-c", "orderer"]
         env:
         - name: TZ
