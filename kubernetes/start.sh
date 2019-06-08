@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-./kuberneteth
+./blockchainit
 
-kubectl apply -f claims.yaml && \\
-sleep 20 && \\
-kubectl apply -f deployment.yaml
+kubectl apply -f yaml/
