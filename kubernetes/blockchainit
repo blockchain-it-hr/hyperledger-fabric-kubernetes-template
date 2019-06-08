@@ -4,7 +4,7 @@ require "yaml"
 require "erb"
 
 # generic variables
-@config = YAML.load_file("kuberneteth.yaml")
+@config = YAML.load_file("environment.yaml")
 @organizations = @config["organizations"]
 
 #####################################################################
