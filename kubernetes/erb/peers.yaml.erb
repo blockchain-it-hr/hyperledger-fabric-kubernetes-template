@@ -1,13 +1,8 @@
-<%
-def set_peer_template_vars(values)
-  @name         = values["name"]
-  @selector     = values["selector"]
-  return
-end
--%>
-<%- @organizations.each do |organization| -%>
-<%- organization.values.first.each do |peer| -%>
-<%= set_peer_template_vars(peer.values.first) -%>
+<% @organizations.each do |organization| %>
+<% @organizationName = organization.keys.first %>
+<% organization.values.first.each do |peer| %>
+<% @peerName = peer.keys.first %>
+<% set_peer_template_vars(peer.values.first) %>
 apiVersion: v1
 kind: Service
 metadata:
@@ -49,7 +44,7 @@ spec:
           path: /var/run/docker.sock
       containers:
       - name: peer
-        image: hyperledger/fabric-peer:amd64-1.3.0
+        image: hyperledger/fabric-peer:amd64-<% @version %>>
         command: ["sh", "-c", "peer node start"]
         env:
         - name: TZ
@@ -87,7 +82,7 @@ spec:
         - name: CORE_PEER_LOCALMSPID
           value: Org1MSP
         - name: CORE_PEER_MSPCONFIGPATH
-          value: /fabric/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/
+          value: /fabric/crypto-config/peerOrganizations/org1.example.com/peers/<% @peerName %>>.<% @organizationName %>.<% @namespace %>.com/msp/
         - name: CORE_PEER_VALIDATOR_CONSENSUS_PLUGIN
           value: "pbft"
         - name: CORE_PBFT_GENERAL_MODE
@@ -145,3 +140,29 @@ spec:
 ---
 <% end -%>
 <% end -%>
+<%
+def set_general_config
+  @version = @config["version"]
+  @namespace = @config["namespace"]
+  @hostname = @config["hostname"]
+  @databaseHost = @config["databaseHost"]
+  @databaseUsername = @config["databaseUsername"]
+  @databasePassword = @config["databasePassword"]
+  @databaseDatabase = @config["databaseDatabase"]
+  return
+end
+%>
+<%
+def set_node_template_vars(values)
+  @version = values["version"]
+  @organizations = values["organizations"]
+  return
+end
+%>
+    <%
+def set_peer_template_vars(values)
+  @name         = values["name"]
+  @selector     = values["selector"]
+  return
+end
+-%>

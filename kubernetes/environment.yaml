@@ -1,6 +1,6 @@
 # configuration for the bootnode that makes the cluster nodes aware of each other - for that make sure bootnode has same genesis block
 version: 1.4.0
-organizationName: example
+namespace: example
 hostname: localhost
 databaseHost: blockchain-explorer-db
 databaseUsername: hppoc

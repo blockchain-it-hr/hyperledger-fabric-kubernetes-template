@@ -21,11 +21,42 @@ require "erb"
 # Create config files for each node
 #####################################################################
 
+
+
 def set_node_template_vars(values)
   @version = values["version"]
   @organizations = values["organizations"]
   return
 end
+
+def set_general_config
+  @version = @config["version"]
+  @namespace = @config["namespace"]
+  @hostname = @config["hostname"]
+  @databaseHost = @config["databaseHost"]
+  @databaseUsername = @config["databaseUsername"]
+  @databasePassword = @config["databasePassword"]
+  @databaseDatabase = @config["databaseDatabase"]
+  return
+end
+
+def set_peer_template_vars(values)
+  @name         = values["name"]
+  @selector     = values["selector"]
+  return
+end
+
+@organizations.each do |organization|
+  @organizationName = organization.keys.first
+  organization.values.first.each do |peer|
+    @peerName = peer.keys.first
+    set_peer_template_vars(peer.values.first)
+  end
+end
+
+##Initialize
+set_general_config
+
 
 #####################################################################
 # Claims
@@ -68,7 +99,6 @@ end
 File.open("yaml/peers.yaml", "w") do |f|
   f.puts (ERB.new(File.read("erb/peers.yaml.erb"), nil, "-").result)
 end
-
 
 #####################################################################
 # Deployment
