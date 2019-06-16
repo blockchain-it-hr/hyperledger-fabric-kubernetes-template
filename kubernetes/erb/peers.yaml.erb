@@ -1,8 +1,9 @@
+<% require_relative 'erb/helpers.rb' %>
 <% @organizations.each do |organization| %>
-<% @organizationName = organization.keys.first %>
+<% @organization_name = organization.keys.first %>
 <% organization.values.first.each do |peer| %>
-<% @peerName = peer.keys.first %>
-<% set_peer_template_vars(peer.values.first) %>
+<% @peer_name = peer.keys.first %>
+<% Helpers.load_peer_template_vars(peer.values.first) %>
 apiVersion: v1
 kind: Service
 metadata:
@@ -48,7 +49,7 @@ spec:
         command: ["sh", "-c", "peer node start"]
         env:
         - name: TZ
-          value: "America/Sao_Paulo"
+          value: "<% @TZ %>"
         - name: CORE_PEER_ADDRESSAUTODETECTa
           value: "true"
         - name: CORE_PEER_NETWORKID
@@ -80,9 +81,9 @@ spec:
         - name: CORE_VM_ENDPOINT
           value: unix:///host/var/run/docker.sock
         - name: CORE_PEER_LOCALMSPID
-          value: Org1MSP
+          value: <% @organization_name %>MSP
         - name: CORE_PEER_MSPCONFIGPATH
-          value: /fabric/crypto-config/peerOrganizations/org1.example.com/peers/<% @peerName %>>.<% @organizationName %>.<% @namespace %>.com/msp/
+          value: /fabric/crypto-config/peerOrganizations/<% @organization_name %>.<% @namespace %>.com/peers/<% @peerName %>>.<% @organizationName %>.<% @namespace %>.com/msp/
         - name: CORE_PEER_VALIDATOR_CONSENSUS_PLUGIN
           value: "pbft"
         - name: CORE_PBFT_GENERAL_MODE
@@ -140,29 +141,3 @@ spec:
 ---
 <% end -%>
 <% end -%>
-<%
-def set_general_config
-  @version = @config["version"]
-  @namespace = @config["namespace"]
-  @hostname = @config["hostname"]
-  @databaseHost = @config["databaseHost"]
-  @databaseUsername = @config["databaseUsername"]
-  @databasePassword = @config["databasePassword"]
-  @databaseDatabase = @config["databaseDatabase"]
-  return
-end
-%>
-<%
-def set_node_template_vars(values)
-  @version = values["version"]
-  @organizations = values["organizations"]
-  return
-end
-%>
-    <%
-def set_peer_template_vars(values)
-  @name         = values["name"]
-  @selector     = values["selector"]
-  return
-end
--%>

@@ -12,12 +12,12 @@ spec:
       path: /var/run/docker.sock
   containers:
     - name: fabrictools
-      image: hyperledger/fabric-tools:amd64-1.4.0
+      image: hyperledger/fabric-tools:amd64-
       imagePullPolicy: Always
       command: ["sh", "-c", "sleep 48h"]
       env:
       - name: TZ
-        value: "America/Sao_Paulo"
+        value: 
       - name: FABRIC_CFG_PATH
         value: "/fabric"
       volumeMounts:

@@ -1,11 +1,20 @@
-# configuration for the bootnode that makes the cluster nodes aware of each other - for that make sure bootnode has same genesis block
 version: 1.4.0
 namespace: example
 hostname: localhost
-databaseHost: blockchain-explorer-db
-databaseUsername: hppoc
-databasePassword: password
-databaseDatabase: fabricexplorer
+database_host: blockchain-explorer-db
+database_username: hppoc
+database_password: password
+database_database: fabricexplorer
+admin_username: admin
+admin_password: adminpw
+TZ: America/Sao_Paulo
+orderers:
+- orderer:
+    CONFIGTX_ORDERER_KAFKA_BROKERS: kafka1.local.parisi.biz:9092,kafka2.local.parisi.biz:9092,kafka3.local.parisi.biz:9092,kafka4.local.parisi.biz:9092
+    CONFIGTX_ORDERER_ADDRESSES: blockchain-orderer:31010
+    ORDERER_GENERAL_LISTENADDRESS: 0.0.0.0
+    ORDERER_GENERAL_LISTENPORT: 31010
+    ORDERER_GENERAL_LOGLEVEL: debug
 organizations:
 - organization01:
   - peer01:

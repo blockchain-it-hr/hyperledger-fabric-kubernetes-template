@@ -34,13 +34,13 @@ spec:
         image: postgres:10.4-alpine
         env:
         - name: TZ
-          value: "America/Sao_Paulo"
+          value: "<%= @TZ %>"
         - name: DATABASE_DATABASE
-          value: <%= @config["databaseUsername"] %>
+          value: <%= @database_database %>
         - name: DATABASE_USERNAME
-          value: <%= @config["databaseUsername"] %>
+          value: <%= @database_username %>
         - name: DATABASE_PASSWORD
-          value:  <%= @config["databasePassword"] %>
+          value:  <%= @database_password %>
         volumeMounts:
         - mountPath: /fabric
           name: fabricfiles
@@ -66,13 +66,13 @@ spec:
         command: ["sh" , "-c" , "/fabric/config/explorer/app/run.sh"]
         env:
         - name: TZ
-          value: "America/Sao_Paulo"
+          value: "<%= @TZ %>"
         - name: DATABASE_HOST
-          value: <%= @config["databaseHost"] %>
+          value: <%= @database_host %>
         - name: DATABASE_USERNAME
-          value: <%= @config["databaseUsername"] %>
+          value: <%= @database_username %>
         - name: DATABASE_PASSWORD
-          value: <%= @config["databasePassword"] %>
+          value: <%= @database_password %>
         volumeMounts:
         - mountPath: /fabric
           name: fabricfiles

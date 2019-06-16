@@ -34,8 +34,8 @@ spec:
           claimName: fabric-pvc
       containers:
       - name: ca
-        image: hyperledger/fabric-ca:amd64-1.3.0
-        command: ["sh", "-c", "fabric-ca-server start -b admin:adminpw -d"]
+        image: hyperledger/fabric-ca:amd64-<% @version %>
+        command: ["sh", "-c", "fabric-ca-server start -b <% @admin_username %>>:<% @admin_password %>> -d"]
         env:
         - name: TZ
           value: "America/Sao_Paulo"

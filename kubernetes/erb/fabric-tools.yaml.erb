@@ -1,10 +1,3 @@
-<%
-def set_node_template_vars(values)
-  @version         = values["version"]
-  @hostname        = values["hostname"]
-  return
-end
--%>
 apiVersion: v1
 kind: Pod
 metadata:
@@ -19,12 +12,12 @@ spec:
       path: /var/run/docker.sock
   containers:
     - name: fabrictools
-      image: hyperledger/fabric-tools:amd64-<%= @config["version"] %>
+      image: hyperledger/fabric-tools:amd64-<%= @version %>
       imagePullPolicy: Always
       command: ["sh", "-c", "sleep 48h"]
       env:
       - name: TZ
-        value: "America/Sao_Paulo"
+        value: <% @TZ %>
       - name: FABRIC_CFG_PATH
         value: "/fabric"
       volumeMounts:

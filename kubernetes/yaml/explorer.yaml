@@ -34,13 +34,13 @@ spec:
         image: postgres:10.4-alpine
         env:
         - name: TZ
-          value: "America/Sao_Paulo"
+          value: ""
         - name: DATABASE_DATABASE
-          value: hppoc
+          value: 
         - name: DATABASE_USERNAME
-          value: hppoc
+          value: 
         - name: DATABASE_PASSWORD
-          value:  password
+          value:  
         volumeMounts:
         - mountPath: /fabric
           name: fabricfiles
@@ -66,13 +66,13 @@ spec:
         command: ["sh" , "-c" , "/fabric/config/explorer/app/run.sh"]
         env:
         - name: TZ
-          value: "America/Sao_Paulo"
+          value: ""
         - name: DATABASE_HOST
-          value: blockchain-explorer-db
+          value: 
         - name: DATABASE_USERNAME
-          value: hppoc
+          value: 
         - name: DATABASE_PASSWORD
-          value: password
+          value: 
         volumeMounts:
         - mountPath: /fabric
           name: fabricfiles
