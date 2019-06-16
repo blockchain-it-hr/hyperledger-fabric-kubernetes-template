@@ -1,5 +1,15 @@
 #!/usr/bin/env ruby
 
+print '
+    Created by Blockchain IT,
+    If you need Fullstack, Blockchain or DevOps services
+    contact us on info@blockchain-it.hr
+
+    Happy hacking ;)
+    Edi
+
+'
+
 require "yaml"
 require "erb"
 
@@ -58,6 +68,7 @@ end
 File.open("yaml/peers.yaml", "w") do |f|
   f.puts (ERB.new(File.read("erb/peers.yaml.erb"), nil, "-").result)
 end
+
 
 #####################################################################
 # Deployment

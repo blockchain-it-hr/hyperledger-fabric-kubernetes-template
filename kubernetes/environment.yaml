@@ -7,24 +7,24 @@ databaseUsername: hppoc
 databasePassword: password
 databaseDatabase: fabricexplorer
 organizations:
-  - organization01:
-      - peer01:
-          - name: blockchain-org1peer1
-          - selector: blockchain-org1peer1
-      - peer02:
-          - name: blockchain-org1peer2
-          - selector: blockchain-org1peer2
-  - organization02:
-      - peer01:
-          - name: blockchain-org2peer1
-          - selector: blockchain-org2peer1
-      - peer02:
-          - name: blockchain-org2peer2
-          - selector: blockchain-org2peer2
-  - organization03:
-      - peer01:
-          - name: blockchain-org3peer1
-          - selector: blockchain-org3peer1
-      - peer02:
-          - name: blockchain-org3peer2
-          - selector: blockchain-org3peer2
+- organization01:
+  - peer01:
+      name: blockchain-org1peer1
+      selector: blockchain-org1peer1
+  - peer02:
+      name: blockchain-org1peer2
+      selector: blockchain-org1peer2
+- organization02:
+  - peer01:
+      name: blockchain-org2peer1
+      selector: blockchain-org2peer1
+  - peer02:
+      name: blockchain-org2peer2
+      selector: blockchain-org2peer2
+- organization03:
+  - peer01:
+      name: blockchain-org3peer1
+      selector: blockchain-org3peer1
+  - peer02:
+      name: blockchain-org3peer2
+      selector: blockchain-org3peer2
