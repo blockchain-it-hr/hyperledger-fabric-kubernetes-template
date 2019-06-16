@@ -21,41 +21,48 @@ end
 # Claims
 #####################################################################
 File.open("yaml/claims.yaml", "w") do |f|
-  f.puts (ERB.new(File.read("yaml/claims.yaml.erb"), nil, "-").result)
+  f.puts (ERB.new(File.read("erb/claims.yaml.erb"), nil, "-").result)
 end
 
 #####################################################################
 # Fabric tools
 #####################################################################
 File.open("yaml/fabric-tools.yaml", "w") do |f|
-  f.puts (ERB.new(File.read("yaml/fabric-tools.yaml.erb"), nil, "-").result)
+  f.puts (ERB.new(File.read("erb/fabric-tools.yaml.erb"), nil, "-").result)
 end
 
 #####################################################################
 # Hyperledger Explorer 
 #####################################################################
 File.open("yaml/explorer.yaml", "w") do |f|
-  f.puts (ERB.new(File.read("yaml/explorer.yaml.erb"), nil, "-").result)
+  f.puts (ERB.new(File.read("erb/explorer.yaml.erb"), nil, "-").result)
+end
+
+#####################################################################
+# Certificate Authority
+#####################################################################
+File.open("yaml/ca.yaml", "w") do |f|
+  f.puts (ERB.new(File.read("erb/ca.yaml.erb"), nil, "-").result)
 end
 
 #####################################################################
 # Orderers 
 #####################################################################
 File.open("yaml/orderers.yaml", "w") do |f|
-  f.puts (ERB.new(File.read("yaml/orderers.yaml.erb"), nil, "-").result)
+  f.puts (ERB.new(File.read("erb/orderers.yaml.erb"), nil, "-").result)
 end
 
 #####################################################################
 # Peers 
 #####################################################################
 File.open("yaml/peers.yaml", "w") do |f|
-  f.puts (ERB.new(File.read("yaml/peers.yaml.erb"), nil, "-").result)
+  f.puts (ERB.new(File.read("erb/peers.yaml.erb"), nil, "-").result)
 end
 
 #####################################################################
 # Deployment
 #####################################################################
 File.open("yaml/deployment.yaml", "w") do |f|
-  f.puts (ERB.new(File.read("yaml/deployment.yaml.erb"), nil, "-").result)
+  f.puts (ERB.new(File.read("erb/deployment.yaml.erb"), nil, "-").result)
 end
 
