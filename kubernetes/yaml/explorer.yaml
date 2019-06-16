@@ -29,7 +29,6 @@ spec:
       - name: fabricfiles
         persistentVolumeClaim:
           claimName: fabric-pvc
-
       containers:
       - name: postgres
         image: postgres:10.4-alpine
@@ -61,7 +60,6 @@ spec:
       - name: fabricfiles
         persistentVolumeClaim:
           claimName: fabric-pvc
-
       containers:
       - name: explorer
         image: hyperledger/explorer:latest

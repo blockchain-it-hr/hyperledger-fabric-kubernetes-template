@@ -24,7 +24,7 @@ spec:
         env:
         - name: TZ
           value: "America/Sao_Paulo"
-        - name: CORE_PEER_ADDRESSAUTODETECT
+        - name: CORE_PEER_ADDRESSAUTODETECTa
           value: "true"
         - name: CORE_PEER_NETWORKID
           value: nid1

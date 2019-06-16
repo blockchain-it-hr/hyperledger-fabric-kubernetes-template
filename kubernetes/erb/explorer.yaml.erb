@@ -1,8 +1,3 @@
-<%
-def set_node_template_vars(values)
-  return
-end
--%>
 apiVersion: v1
 kind: Service
 metadata:
@@ -34,7 +29,6 @@ spec:
       - name: fabricfiles
         persistentVolumeClaim:
           claimName: fabric-pvc
-
       containers:
       - name: postgres
         image: postgres:10.4-alpine
@@ -66,7 +60,6 @@ spec:
       - name: fabricfiles
         persistentVolumeClaim:
           claimName: fabric-pvc
-
       containers:
       - name: explorer
         image: hyperledger/explorer:latest
